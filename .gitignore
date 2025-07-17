@@ -1,0 +1,9 @@
+# CLIENT
+Client/build/
+Client/CMakeLists.txt
+Client/CMakeLists.txt.user
+
+# SERVER
+Server/build/
+Server/CMakeLists.txt
+Server/CMakeLists.txt.user
