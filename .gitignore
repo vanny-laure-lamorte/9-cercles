@@ -1,7 +1,11 @@
 # CLIENT
 Client/build/
-Client/CMakeLists.txt.user
+Client/.vscode/
 
 # SERVER
 Server/build/
-Server/CMakeLists.txt.user
+Server/.vscode/
+
+*.exe
+
+.github
