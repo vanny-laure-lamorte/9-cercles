@@ -9,13 +9,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Récupérer tous les .cpp  dans src et .h include
 file(GLOB INCLUDE_FOLDER
-"include/*.cpp"
 "include/*.h"
 )
 
 file(GLOB SRC_FOLDER
 "src/*.cpp"
-"src/*.h"
 )
 
 # Regroupe tout dans SRCS
@@ -25,3 +23,6 @@ set (SRCS
 )
 
 add_executable(server ${SRCS})
+
+# Link against Winsock2 on Windows
+target_link_libraries(server ws2_32)
