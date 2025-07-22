@@ -1,23 +1,20 @@
-#include "../include/LPTF_Socket.h"
+#include "LPTF_Client.h"
+using namespace std;
 
 int main() {
-    std::string ip;
-    std::cout << "Enter server IP: ";
-    std::cin >> ip;
+    string ip;
+    int port = 12345;
 
-    LPTF_Socket client;
-    if (!client.createSocket()) return 1;
-    if (!client.connectToServer(ip, 12345)) {
-        std::cerr << "Connection failed\n";
-        return 1;
+    cout << "Enter IP address : ";
+    getline(cin, ip);
+    cout << (ip + " " + to_string(port) + "\n");
+    try {
+        LPTF_Client client(ip, port);
+        client.run();
+    } catch (const exception& e) {
+        cerr << "Error : " << e.what() << endl;
+        return EXIT_FAILURE;
     }
 
-    client.sendMessage("Hello from client!");
-
-    std::string response = client.receiveMessage();
-    if (!response.empty()) {
-        std::cout << "Server says: " << response << "\n";
-    }
-
-    return 0;
+    return EXIT_SUCCESS;
 }

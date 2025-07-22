@@ -5,6 +5,7 @@
 #include <ws2tcpip.h>
 #include <string>
 #include <iostream>
+using namespace std;
 
 #pragma comment(lib, "ws2_32.lib")
 
@@ -18,13 +19,14 @@ public:
 
     bool createSocket();
     void closeSocket();
-    bool sendMessage(const std::string &message);
-    std::string receiveMessage();
+    bool sendMessage(const void *data, int len);
+    int receiveMessage(void *buffer, int len);
     bool bindSocket(const std::string &ip, int port);
     bool listenSocket(int backlog);
     SOCKET acceptConnection();
 
     SOCKET getSocket() const;
+
 private:
     SOCKET _sockfd;
 };

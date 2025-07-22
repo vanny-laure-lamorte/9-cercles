@@ -66,3 +66,62 @@ ctest --test-dir server/build --output-on-failure
 .\server\server.exe
 ```
 ---
+
+**Deuxième cercle (v2.0)**
+
+## 🧱 Structure des Classes Principales
+
+### 🔷 `LPTF_Packet`
+- Gère l'encapsulation des messages réseau sous forme binaire.
+- Chaque paquet contient :
+  - `version` : version du protocole
+  - `type` : identifiant du type de message
+  - `length` : longueur du contenu
+  - `payload` : contenu du message (binaire ou texte)
+- Fournit des méthodes :
+  - `serialize()` : convertit l'objet en flux binaire
+  - `deserialize()` : reconstruit un paquet depuis un flux réseau
+---
+
+### 🔷 `LPTF_Socket`
+- Encapsule les appels systèmes réseau (`WinSock2`) pour éviter tout `syscall` direct dans les classes client/serveur.
+- Méthodes :
+  - `createSocket()`, `closeSocket()`
+  - `bindSocket(ip, port)`, `listenSocket(backlog)`
+  - `acceptConnection()`
+  - `connectToServer(ip, port)`
+  - `sendMessage(void*, int)` / `receiveMessage(void*, int)`
+
+---
+
+### 🔷 `LPTF_Client`
+- Représente un client réseau.
+- Utilise `LPTF_Socket` pour se connecter au serveur.
+- Sérialise les messages texte via `LPTF_Packet` pour les envoyer.
+- Attend des réponses structurées et les désérialise.
+
+---
+
+### 🔷 `LPTF_Server`
+- Lance un serveur TCP en écoutant sur une IP/port donné.
+- Accepte une connexion client.
+- Reçoit les paquets via `LPTF_Socket`, les interprète avec `LPTF_Packet`.
+- Répond dynamiquement (écho ou traitement basique).
+
+---
+
+## 🧪 Tests
+- Utilisation de [Catch2](https://github.com/catchorg/Catch2) pour tester :
+  - Création et fermeture de sockets
+  - Connexions client/serveur
+  - Échecs attendus (mauvais IP, ports occupés)
+  - Envoi/réception de paquets `LPTF_Packet`
+
+---
+
+## 🚀 Lancer le projet
+
+### Côté serveur
+```bash
+cd Server/build
+./server.exe

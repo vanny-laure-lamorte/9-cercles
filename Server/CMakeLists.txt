@@ -6,7 +6,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # === HEADERS & SOURCES ===
 file(GLOB HEADER_FILES "include/*.h")
-set(SOCKET_SOURCES src/LPTF_Socket.cpp)
+set(SOCKET_SOURCES
+src/LPTF_Socket.cpp
+src/LPTF_Packet.cpp
+src/LPTF_Server.cpp)
 
 # === LIBRAIRIES : lptf_server
 add_library(lptf_server STATIC ${SOCKET_SOURCES} ${HEADER_FILES})

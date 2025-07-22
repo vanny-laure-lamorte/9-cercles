@@ -5,11 +5,11 @@ LPTF_Socket::LPTF_Socket() : _sockfd(INVALID_SOCKET)
     WSADATA wsaData;
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
     {
-        std::cerr << "WSAStartup failed\n";
+        cerr << "WSAStartup failed\n";
     }
     else
     {
-        std::cout << "WSAStartup succeeded\n";
+        cout << "WSAStartup succeeded\n";
     }
 }
 
@@ -34,28 +34,21 @@ void LPTF_Socket::closeSocket()
     }
 }
 
-bool LPTF_Socket::sendMessage(const std::string &message)
-{
-    return send(_sockfd, message.c_str(), message.length(), 0) != SOCKET_ERROR;
+bool LPTF_Socket::sendMessage(const void* data, int len) {
+    return send(_sockfd, static_cast<const char*>(data), len, 0) != SOCKET_ERROR;
+}
+int LPTF_Socket::receiveMessage(void* buffer, int len) {
+    return recv(_sockfd, static_cast<char*>(buffer), len, 0);
 }
 
-std::string LPTF_Socket::receiveMessage()
-{
-    char buffer[1024] = {};
-    int received = recv(_sockfd, buffer, sizeof(buffer), 0);
-    if (received > 0)
-        return std::string(buffer, received);
-    return {};
-}
-
-bool LPTF_Socket::bindSocket(const std::string &ip, int port)
+bool LPTF_Socket::bindSocket(const string &ip, int port)
 {
     sockaddr_in addr{};
     addr.sin_family = AF_INET;
     addr.sin_port = htons(port);
     if (inet_pton(AF_INET, ip.c_str(), &addr.sin_addr) != 1)
     {
-        std::cerr << "Invalid IP address\n";
+        cerr << "Invalid IP address\n";
         return false;
     }
 
