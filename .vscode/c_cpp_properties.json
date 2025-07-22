@@ -3,7 +3,9 @@
         {
             "name": "Win32",
             "includePath": [
-                "${default}"
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/Server/build/_deps/catch2-src/src",
+                "${workspaceFolder}/Client/build/_deps/catch2-src/src"
             ],
             "defines": [
                 "_DEBUG",
