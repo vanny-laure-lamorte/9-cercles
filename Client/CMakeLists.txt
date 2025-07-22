@@ -1,21 +1,38 @@
+# Specify the miniimum CMake version required
 cmake_minimum_required(VERSION 3.5)
-project(client)
 
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
+# Define the project name and version
+project(client)
+set(PROJECT_VERSION "v1.0")
+
+# Enable automatic handling of Qt-specific features
+# set(CMAKE_AUTOUIC ON)
+# set(CMAKE_AUTOMOC ON)
+# set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Récupérer tous les .cpp dans src
-file(GLOB SRC_FOLDER
-    "src/*.cpp"
+# Collect all .h files in the include folder
+file(GLOB INCLUDE_FOLDER
+"include/*.h"
 )
 
-add_executable(client ${SRC_FOLDER})
+# Collect all .cpp files in the src folder
+file(GLOB SRC_FOLDER
+"src/*.cpp"
+)
 
-# Ajouter le dossier include comme répertoire d'includes
-target_include_directories(client PRIVATE "${PROJECT_SOURCE_DIR}/include")
+# Combine the include folder and source files into a single list
+set (SRCS
+    ${INCLUDE_FOLDER}
+    ${SRC_FOLDER}
+)
 
-# 🔧 Link against Winsock2 on Windows
+# Create the 'client' binary using all collected source files
+add_executable(client ${SRCS})
+
+# Link against Winsock2 on Windows
 target_link_libraries(client ws2_32)
+
+# Place the compiled 'client' binary in the root directory of the project
+set_target_properties(client PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
