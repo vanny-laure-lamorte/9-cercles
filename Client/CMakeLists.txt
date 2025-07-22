@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 #  Source files
-set(LPTF_SRC src/LPTF_Socket.cpp)
+file(GLOB LPTF_SRC "src/LPTF_*.cpp")
 set(CLIENT_MAIN src/client.cpp)
 set(TEST_SRC test/test_socket.cpp)
 

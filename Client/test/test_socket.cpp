@@ -24,5 +24,5 @@ TEST_CASE("Client sendMessage", "[client]") {
     LPTF_Socket client;
     REQUIRE(client.create());
     REQUIRE(client.connect("127.0.0.1", 123));
-    REQUIRE(client.send("Should succeed"));
+    REQUIRE(client.sendMsg("Should succeed", 16));
 }

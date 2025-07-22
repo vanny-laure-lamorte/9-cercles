@@ -10,6 +10,8 @@ using namespace std;
 #include <ws2tcpip.h>
 #include <iostream>
 
+#include "../include/LPTF_Packet.h"
+
 #pragma comment(lib, "ws2_32.lib")
 
 class LPTF_Socket {
@@ -27,10 +29,10 @@ public:
     bool connect(const string& host, int port);
 
     //  Sends data through the socket
-    int send(const string& data);
+    bool sendMsg(const void* data, int len);
 
     //  Receives data from the socket
-    int recv(string& data);
+    int receive(void* buffer, int len);
 
     //  Closes the socket
     void close();
@@ -38,6 +40,9 @@ public:
 
     // Monitors multiple sockets for readiness (read) with a timeout
     static int select_sockets(vector<LPTF_Socket*>& sockets, int timeout_ms);
+
+bool recvPacket(LPTF_Packet& packet, std::vector<uint8_t>& buffer);
+    bool sendPacket(const LPTF_Packet& packet);
 
 private:
 

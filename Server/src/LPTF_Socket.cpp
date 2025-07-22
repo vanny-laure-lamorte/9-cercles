@@ -65,20 +65,13 @@ bool LPTF_Socket::connect(const string& host, int port) {
     return ::connect(sockfd, (sockaddr*)&serverAddr, sizeof(serverAddr)) != SOCKET_ERROR;
 }
 
-int LPTF_Socket::send(const string& data) {
-    return ::send(sockfd, data.c_str(), static_cast<int>(data.size()), 0);
+
+bool LPTF_Socket::sendMsg(const void* data, int len) {
+    return send(sockfd, static_cast<const char*>(data), len, 0) != SOCKET_ERROR;
 }
 
-int LPTF_Socket::recv(string& data) {
-    char buffer[1024];
-    int bytes = ::recv(sockfd, buffer, sizeof(buffer) - 1, 0);
-
-    if (bytes > 0) {
-        buffer[bytes] = '\0';
-        data = buffer;
-    }
-
-    return bytes;
+int LPTF_Socket::receive(void* buffer, int len) {
+    return recv(sockfd, static_cast<char*>(buffer), len, 0);
 }
 
 void LPTF_Socket::close() {
@@ -119,6 +112,68 @@ int LPTF_Socket::select_sockets(vector<LPTF_Socket*>& sockets, int timeout_ms) {
 
         sockets = ready_sockets;
     }
-
     return result;
 }
+
+bool LPTF_Socket::sendPacket(const LPTF_Packet& packet) {
+    std::vector<uint8_t> data = packet.serialize();
+    size_t totalSent = 0;
+    while (totalSent < data.size()) {
+        int sent = ::send(sockfd, reinterpret_cast<const char*>(data.data() + totalSent), static_cast<int>(data.size() - totalSent), 0);
+        if (sent == SOCKET_ERROR || sent == 0) {
+            return false;
+        }
+        totalSent += sent;
+    }
+    return true;
+}
+
+bool LPTF_Socket::recvPacket(LPTF_Packet& packet, std::vector<uint8_t>& buffer) {
+
+    std::cout << "rcv Packet";
+    while (buffer.size() < 3) {
+        char temp[512];
+        int bytes = ::recv(sockfd, temp, sizeof(temp), 0);
+        std::cout << "[recvPacket] recv bytes: " << bytes << "\n";
+        if (bytes <= 0) {
+            std::cout << "[recvPacket] recv failed or connection closed\n";
+            return false;
+        }
+        buffer.insert(buffer.end(), temp, temp + bytes);
+    }
+
+    uint16_t payloadLen = ntohs(*reinterpret_cast<const uint16_t*>(&buffer[1]));
+    size_t packetSize = 3 + payloadLen;
+    while (buffer.size() < packetSize) {
+        char temp[512];
+        int bytes = ::recv(sockfd, temp, sizeof(temp), 0);
+        std::cout << "[recvPacket] recv bytes: " << bytes << "\n";
+        if (bytes <= 0) {
+            std::cout << "[recvPacket] recv failed or connection closed\n";
+            return false;
+        }
+        buffer.insert(buffer.end(), temp, temp + bytes);
+    }
+
+    size_t consumedBytes = 0;
+    try {
+        packet = LPTF_Packet::deserialize(buffer.data(), buffer.size(), consumedBytes);
+    } catch (const std::exception& e) {
+        std::cout << "[recvPacket] deserialize exception: " << e.what() << "\n";
+        return false;
+    } catch (...) {
+        std::cout << "[recvPacket] deserialize unknown exception\n";
+        return false;
+    }
+    buffer.erase(buffer.begin(), buffer.begin() + consumedBytes);
+    return true;
+}
+
+int LPTF_Socket::recvRaw(void* buffer, int len) {
+    #ifdef _WIN32
+        return ::recv(sockfd, static_cast<char*>(buffer), len, 0);
+    #else
+        return ::recv(sockfd, buffer, len, 0);
+    #endif
+}
+

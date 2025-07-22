@@ -12,6 +12,8 @@ using namespace std;
 #include <string>
 #include <vector>
 
+#include "../include/LPTF_Packet.h"
+
 class LPTF_Socket {
 public:
 
@@ -36,10 +38,10 @@ public:
     bool connect(const string& host, int port);
 
     //  Sends data through the socket
-    int send(const string& data);
+    bool sendMsg(const void* data, int len);
 
     //  Receives data from the socket
-    int recv(string& data);
+    int receive(void* buffer, int len);
 
     //  Closes the socket
     void close();
@@ -48,9 +50,17 @@ public:
     // Monitors multiple sockets for readiness (read) with a timeout
     static int select_sockets(vector<LPTF_Socket*>& sockets, int timeout_ms);
 
+    // Sends a packet over the socket
+    bool sendPacket(const LPTF_Packet& packet);
+
+    // Receive packet
+    bool recvPacket(LPTF_Packet& packet, std::vector<uint8_t>& buffer);
+
+    int recvRaw(void* buffer, int len);
+
 private:
 
-    // The socket handl
+    // The socket handle
     SOCKET sockfd;
 
     // Count of active sockets for managing Winsock startup/cleanup
