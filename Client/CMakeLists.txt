@@ -1,31 +1,26 @@
-# Specify the minimum CMake version required
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
+project(client)
 
-# Define the project and its version
-project(client VERSION 1.0)
-
-# Set the C++ standard
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-#  Source files
-set(LPTF_SRC src/LPTF_Socket.cpp)
-set(CLIENT_MAIN src/client.cpp)
-set(TEST_SRC test/test_socket.cpp)
+# === HEADERS & SOURCES ===
+file(GLOB HEADER_FILES "include/*.h")
+set(SOCKET_SOURCES
+src/LPTF_Socket.cpp
+src/LPTF_Packet.cpp
+src/LPTF_Client.cpp)
 
-#  Create a reusable static library for client logic
-add_library(lptf_client STATIC ${LPTF_SRC})
+# === LIBRAIRIE : lptf_client
+add_library(lptf_client STATIC ${SOCKET_SOURCES} ${HEADER_FILES})
 target_include_directories(lptf_client PUBLIC include)
-target_link_libraries(lptf_client PUBLIC ws2_32)  # Link Winsock2 on Windows
 
-#  Main client executable
-add_executable(client ${CLIENT_MAIN})
-target_link_libraries(client PRIVATE lptf_client)
-
-# Output the 'client' binary in the root project directory
+# === PRINCIPAL : client
+add_executable(client src/client.cpp)
+target_link_libraries(client PRIVATE lptf_client ws2_32)
 set_target_properties(client PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
 
-# === Unit Tests ===
+# === TESTS ===
 include(FetchContent)
 FetchContent_Declare(
   Catch2
@@ -34,10 +29,9 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(Catch2)
 
-# Test executable using Catch2
-add_executable(client_test ${TEST_SRC})
-target_link_libraries(client_test PRIVATE lptf_client Catch2::Catch2WithMain)
+add_executable(client_tests test/test_socket.cpp)
+target_link_libraries(client_tests PRIVATE lptf_client Catch2::Catch2WithMain ws2_32)
+target_include_directories(client_tests PRIVATE include)
 
-# Enable CTest and register the test
 enable_testing()
-add_test(NAME ClientTest COMMAND client_test)
+add_test(NAME ClientTests COMMAND client_tests)
