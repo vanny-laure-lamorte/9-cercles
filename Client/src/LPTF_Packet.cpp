@@ -37,7 +37,7 @@ LPTF_Packet LPTF_Packet::deserialize(const vector<uint8_t> &data)
         throw invalid_argument("Data too short");
     }
     uint16_t totalSize = (static_cast<uint16_t>(data[0]) << 8) | data[1];
-    if (data.size() != 2 + totalSize -2)
+    if (data.size() != totalSize)
     {
         throw invalid_argument("Packet size mismatch");
     }

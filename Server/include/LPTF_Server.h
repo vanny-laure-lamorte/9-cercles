@@ -36,8 +36,11 @@ private:
     // Send packet(s) and wait for the server to respond
     void handleClient(LPTF_Socket &clientSocket);
 
+    // Handles a new client connection
+    void handleConnection();
+
     // Receives a packet from the client
-    void sendResponse(const string &message);
+    void sendResponse(LPTF_Socket &clientSocket, const std::string &message);
 };
 
 #endif

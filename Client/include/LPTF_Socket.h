@@ -19,6 +19,11 @@ public:
     //  Destructor: Cleans up the socket object
     ~LPTF_Socket();
 
+    // Copy constructor is deleted to prevent copying
+    LPTF_Socket(const LPTF_Socket &other) = delete;
+    // Assignment operator is deleted to prevent assignment
+    LPTF_Socket &operator=(const LPTF_Socket &other) = delete;
+
     //  Creates a TCP socket
     bool create();
 

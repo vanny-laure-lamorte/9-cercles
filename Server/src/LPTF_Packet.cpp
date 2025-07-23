@@ -35,19 +35,13 @@ std::vector<uint8_t> LPTF_Packet::serialize() const
 
 LPTF_Packet LPTF_Packet::deserialize(const std::vector<uint8_t> &data)
 {
-    cout << "[DEBUG] Deserialize called with data size: " << data.size() << endl;
     if (data.size() < 4)
     {
         throw std::invalid_argument("Data too short");
     }
     uint16_t totalSize = (static_cast<uint16_t>(data[0]) << 8) | data[1];
-    std::cout << "[DEBUG] Extracted totalSize from header: " << totalSize << std::endl;
-
-    std::cout << "[DEBUG] Full packet size received: " << data.size()
-              << " | Expected: " << (2 + totalSize) << std::endl;
-    if (data.size() != 2 + totalSize - 2)
+    if (data.size() != totalSize)
     {
-        cerr << "[ERROR] Packet size mismatch: data.size() != 2 + totalSize" << endl;
         throw std::invalid_argument("Packet size mismatch");
     }
     uint8_t version = data[2];

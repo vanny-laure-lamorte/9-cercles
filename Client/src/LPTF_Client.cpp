@@ -12,19 +12,19 @@ LPTF_Client::LPTF_Client(const string &ip, int port)
     }
 }
 
+LPTF_Client::~LPTF_Client()
+{
+    socket.close();
+}
+
 void LPTF_Client::sendPacketFromString(const string &message)
 {
-    cout << ">>>>>> 1- Sending packet of size: " << message.size() << endl;
     vector<uint8_t> payload(message.begin(), message.end());
-    cout << ">>>>>> 2- Sending packet of size: " << payload.size() << endl;
     LPTF_Packet packet(0x05, payload);
-    cout << ">>>>>> 3- Sending packet of type: " << static_cast<int>(packet.getType()) << endl;
     auto serialized = packet.serialize();
-    cout << ">>>>>> 4- Sending packet of size: " << serialized.size() << endl;
     if (!socket.sendAll(serialized.data(), serialized.size())) {
         cerr << "Error: Failed to send the full packet." << endl;
     }
-    cout << ">>>>>> 5- Packet sent successfully." << endl;
 }
 
 void LPTF_Client::receivePacketAndPrint()
@@ -54,7 +54,7 @@ void LPTF_Client::receivePacketAndPrint()
         LPTF_Packet response = LPTF_Packet::deserialize(data);
         string reply(response.getPayload().begin(), response.getPayload().end());
         cout << "Server response: " << reply << "\n";
-    } catch (const std::exception& e) {
+    } catch (const exception& e) {
         cerr << "Error: Deserialization failed - " << e.what() << endl;
     }
 }
