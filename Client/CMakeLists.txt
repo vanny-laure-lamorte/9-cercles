@@ -29,7 +29,7 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(Catch2)
 
-add_executable(client_tests tests/tests_client.cpp)
+add_executable(client_tests test/test_client.cpp)
 target_link_libraries(client_tests PRIVATE lptf_client Catch2::Catch2WithMain ws2_32)
 target_include_directories(client_tests PRIVATE include)
 

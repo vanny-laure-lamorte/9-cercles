@@ -29,7 +29,9 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(Catch2)
 
-add_executable(server_tests tests/tests_server.cpp)
+add_executable(server_tests 
+test/test_socket.cpp
+test/test_packet.cpp)
 target_link_libraries(server_tests PRIVATE lptf_server Catch2::Catch2WithMain ws2_32)
 target_include_directories(server_tests PRIVATE include)
 

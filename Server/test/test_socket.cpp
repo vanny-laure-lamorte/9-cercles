@@ -22,3 +22,4 @@ TEST_CASE("Server bind + listen", "[server]")
     REQUIRE(server.bind(54321));
     REQUIRE(server.listen());
 }
+
