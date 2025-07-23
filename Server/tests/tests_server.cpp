@@ -1,20 +1,24 @@
 #include <catch2/catch_test_macros.hpp>
 #include "../include/lptf_socket.h"
 
-TEST_CASE("Server socket creation", "[server]") {
+TEST_CASE("Server socket creation", "[server]")
+{
     LPTF_Socket server;
-    REQUIRE(server.createSocket());
+    REQUIRE(server.create());
 }
 
-TEST_CASE("Server bind fails on invalid IP", "[server]") {
+TEST_CASE("Server binds on an already used port", "[server]")
+{
     LPTF_Socket server;
-    REQUIRE(server.createSocket());
-    REQUIRE_FALSE(server.bindSocket("999.999.999.999", 12345));
+    REQUIRE(server.create());
+    REQUIRE(server.bind(123));
+    REQUIRE_FALSE(server.bind(123));
 }
 
-TEST_CASE("Server bind + listen", "[server]") {
+TEST_CASE("Server bind + listen", "[server]")
+{
     LPTF_Socket server;
-    REQUIRE(server.createSocket());
-    REQUIRE(server.bindSocket("127.0.0.1", 54321));
-    REQUIRE(server.listenSocket(1));
+    REQUIRE(server.create());
+    REQUIRE(server.bind(54321));
+    REQUIRE(server.listen());
 }

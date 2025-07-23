@@ -4,6 +4,7 @@
 #include "LPTF_Socket.h"
 #include "LPTF_Packet.h"
 #include <string>
+#include <iostream>
 using namespace std;
 
 class LPTF_Client {
