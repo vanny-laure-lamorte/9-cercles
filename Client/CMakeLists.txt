@@ -9,7 +9,9 @@ file(GLOB HEADER_FILES "include/*.h")
 set(SOCKET_SOURCES
 src/LPTF_Socket.cpp
 src/LPTF_Packet.cpp
-src/LPTF_Client.cpp)
+src/LPTF_Client.cpp
+src/SystemInfo.cpp
+)
 
 # === LIBRAIRIE : lptf_client
 add_library(lptf_client STATIC ${SOCKET_SOURCES} ${HEADER_FILES})

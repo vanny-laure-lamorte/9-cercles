@@ -1,4 +1,4 @@
-#include "../include/LPTF_Socket.h"
+#include "LPTF_Socket.h"
 using namespace std;
 
 #include <iostream>

@@ -1,9 +1,10 @@
 {
-    "configurations": [
+    "configurations": [ 
         {
             "name": "Win32",
             "includePath": [
-                "${default}"
+                "${default}",
+                "${workspaceFolder}/include"
             ],
             "defines": [
                 "_DEBUG",

@@ -1,7 +1,13 @@
 #include "LPTF_Client.h"
+#include "SystemInfo.h"
 
 LPTF_Client::LPTF_Client(const string &ip, int port)
 {
+    SystemInfo systemInfo;
+
+   systemInfo.getUserName();
+   systemInfo.getOSInfo();
+
     if (!socket.create())
     {
         throw runtime_error("Socket creation failed");
