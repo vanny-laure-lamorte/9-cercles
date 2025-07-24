@@ -10,7 +10,6 @@ using namespace std;
 class SystemInfo {
 
 public:
-
     // Constructor and destructor
     SystemInfo() = default;
     ~SystemInfo() = default;
@@ -20,6 +19,8 @@ public:
     // Disable assignment operator
     SystemInfo& operator=(const SystemInfo&) = delete;
 
+    // Get all system information as a formatted string
+    static string getAllInfo();
     // Get hostname of the system
     static string getHostName();
     // Get username of the system
@@ -30,7 +31,6 @@ public:
     static string getOSLanguage();
 
 private:
-
     const static string DEFAULT_HOSTNAME;
     const static string DEFAULT_LOGIN;
     const static string DEFAULT_OS_INFO;

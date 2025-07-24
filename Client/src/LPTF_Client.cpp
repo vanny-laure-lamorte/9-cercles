@@ -4,9 +4,7 @@
 LPTF_Client::LPTF_Client(const string &ip, int port)
 {
     SystemInfo systemInfo;
-
-   systemInfo.getUserName();
-   systemInfo.getOSInfo();
+    cout << systemInfo.getAllInfo() << endl;
 
     if (!socket.create())
     {
@@ -58,7 +56,6 @@ void LPTF_Client::receivePacketAndPrint()
         cerr << "Error: Failed to receive the full packet." << endl;
         return;
     }
-
     try {
         LPTF_Packet response = LPTF_Packet::deserialize(data);
         string reply(response.getPayload().begin(), response.getPayload().end());
