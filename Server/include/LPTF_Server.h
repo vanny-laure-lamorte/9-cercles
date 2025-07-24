@@ -3,8 +3,11 @@
 
 #include "LPTF_Socket.h"
 #include "LPTF_Packet.h"
+#include <thread>
 #include <string>
 #include <vector>
+#include <conio.h>
+
 using namespace std;
 
 class LPTF_Server
@@ -41,5 +44,8 @@ private:
 
     // Receives a packet from the client
     void sendResponse(LPTF_Socket &clientSocket, const std::string &message);
+
+    void handleAdminInput();
+
 };
 #endif

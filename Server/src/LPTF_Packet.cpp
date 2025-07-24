@@ -1,4 +1,4 @@
-#include "../include/LPTF_Packet.h"
+#include "LPTF_Packet.h"
 
 using namespace std;
 

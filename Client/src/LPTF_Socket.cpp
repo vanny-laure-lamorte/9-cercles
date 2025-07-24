@@ -1,4 +1,4 @@
-#include "../include/LPTF_Socket.h"
+#include "LPTF_Socket.h"
 
 int LPTF_Socket::socket_count = 0;
 

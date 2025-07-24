@@ -1,4 +1,4 @@
-#include "../include/LPTF_Packet.h"
+#include "LPTF_Packet.h"
 
 LPTF_Packet::LPTF_Packet(uint8_t type, const vector<uint8_t> &payload)
     : version(1), type(type), length(static_cast<uint16_t>(payload.size())), payload(payload) {}

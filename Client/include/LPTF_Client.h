@@ -5,6 +5,10 @@
 #include "LPTF_Packet.h"
 #include <string>
 #include <iostream>
+#include <conio.h>
+#include <thread>
+#include <sys/types.h>
+#include <sys/time.h>
 using namespace std;
 
 class LPTF_Client {
