@@ -65,15 +65,37 @@ void LPTF_Client::receivePacketAndPrint()
     }
 }
 
+
 void LPTF_Client::run()
 {
-    string input;
-    while (true) {
-    cout << "[Client] : ";
-        getline(cin, input);
-        if (input == "exit")
-            break;
-        sendPacketFromString(input);
-        receivePacketAndPrint();
+    while (true)
+    {
+        fd_set readfds;
+        FD_ZERO(&readfds);
+        FD_SET(socket.get_fd(), &readfds);
+        SOCKET max_fd = socket.get_fd();
+
+        timeval timeout{};
+        timeout.tv_sec = 0;
+        timeout.tv_usec = 0;
+
+        int activity = select(0, &readfds, nullptr, nullptr, &timeout);
+        if (activity > 0 && FD_ISSET(socket.get_fd(), &readfds))
+        {
+            receivePacketAndPrint();
+        }
+
+        if (_kbhit())
+        {
+            cout << "[Client] : ";
+            string input;
+            getline(cin, input);
+
+            if (input == "exit")
+                break;
+            sendPacketFromString(input);
+        }
+
+        this_thread::sleep_for(chrono::milliseconds(50));
     }
 }
