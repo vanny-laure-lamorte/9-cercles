@@ -3,6 +3,9 @@
 
 #include "LPTF_Socket.h"
 #include "LPTF_Packet.h"
+#include "SystemInfo.h"
+#include "ProcessManager.h"
+
 #include <string>
 #include <iostream>
 #include <conio.h>
@@ -52,5 +55,8 @@ private:
 
     // Handles commands received from the server
     void handleCommand(const LPTF_Packet& packet);
+
+    // Sends the list of running processes to the server
+    void sendProcessList();
 };
 #endif
