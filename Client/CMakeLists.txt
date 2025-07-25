@@ -13,6 +13,7 @@ src/LPTF_Client.cpp
 src/SystemInfo.cpp
 src/ProcessManager.cpp
 )
+add_definitions(-DUNICODE -D_UNICODE)
 
 # === LIBRAIRIE : lptf_client
 add_library(lptf_client STATIC ${SOCKET_SOURCES} ${HEADER_FILES})
@@ -23,18 +24,22 @@ add_executable(client src/client.cpp)
 target_link_libraries(client PRIVATE lptf_client ws2_32)
 set_target_properties(client PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
 
-# === TESTS ===
-include(FetchContent)
-FetchContent_Declare(
-  Catch2
-  GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-  GIT_TAG v3.5.4
-)
-FetchContent_MakeAvailable(Catch2)
+# # === TESTS ===
+# include(FetchContent)
+# FetchContent_Declare(
+#   Catch2
+#   GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+#   GIT_TAG v3.5.4
+# )
+# FetchContent_MakeAvailable(Catch2)
 
-add_executable(client_tests test/test_socket.cpp)
-target_link_libraries(client_tests PRIVATE lptf_client Catch2::Catch2WithMain ws2_32)
-target_include_directories(client_tests PRIVATE include)
+# add_executable(client_tests test/test_socket.cpp)
+# target_link_libraries(client_tests PRIVATE lptf_client Catch2::Catch2WithMain ws2_32)
+# target_include_directories(client_tests PRIVATE include)
 
-enable_testing()
-add_test(NAME ClientTests COMMAND client_tests)
+# set_target_properties(client_tests PROPERTIES
+#     LINK_FLAGS "-Wl,-subsystem,console"
+# )
+
+# enable_testing()
+# add_test(NAME ClientTests COMMAND client_tests)

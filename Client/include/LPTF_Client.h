@@ -6,6 +6,7 @@
 #include "SystemInfo.h"
 #include "ProcessManager.h"
 
+#include <iomanip>
 #include <string>
 #include <iostream>
 #include <conio.h>

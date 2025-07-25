@@ -3,8 +3,17 @@
 LPTF_Client::LPTF_Client(const string &ip, int port)
 {
     ProcessManager pm;
-    cout << pm.getRunningProcesses() << endl;
-
+    vector<vector<string>> processes = pm.getRunningProcesses();
+    cout << "Running processes:" << endl;
+    for (const auto &process : processes)
+    {
+        cout << "Process: " << left << setw(20) << process[0].substr(0, 18)
+             << " PID: " << setw(6) << process[1]
+             << " | PPID: " << setw(6) << process[2]
+             << " | Threads: " << setw(4) << process[3]
+             << " | Priority: " << setw(3) << process[4]
+             << " | Runtime: " << process[5] << endl;
+    }
     if (!socket.create())
     {
         throw runtime_error("Socket creation failed");
@@ -73,8 +82,8 @@ bool LPTF_Client::receivePacketAndPrint()
 void LPTF_Client::sendProcessList()
 {
     ProcessManager pm;
-    string processes = pm.getRunningProcesses();
-    sendPacketFromString(processes, CommandType::PROCESS_LIST_RESPONSE);
+    // string processes = pm.getRunningProcesses();
+    // sendPacketFromString(processes, CommandType::PROCESS_LIST_RESPONSE);
 }
 
 void LPTF_Client::run()
