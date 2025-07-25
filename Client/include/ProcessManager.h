@@ -9,13 +9,21 @@ using namespace std;
 #include <string>
 #include <sstream>
 
-
 /*
-* Get a list of running processes on the system.
-*/
-class ProcessManager {
+ * Get a list of running processes on the system.
+ */
+class ProcessManager
+{
 public:
-    static string getRunningProcesses();
+    // Returns a vector of vectors containing process information
+    static vector<vector<string>> getRunningProcesses();
+
+private:
+    // Returns the runtime of a process in a human-readable format
+    static string getProcessRuntime(DWORD pid);
+
+    // Converts a wide character string to a standard string
+    static string wcharToString(const wchar_t *wstr);
 };
 
 #endif
