@@ -68,11 +68,13 @@ bool LPTF_Client::receivePacketAndPrint()
         cerr << "Error: Failed to receive the full packet." << endl;
         return false;
     }
-    try {
+    try
+    {
         LPTF_Packet packet = LPTF_Packet::deserialize(data);
         handleCommand(packet);
-
-    } catch (const exception& e) {
+    }
+    catch (const exception &e)
+    {
         cerr << "Error: Deserialization failed - " << e.what() << endl;
         return false;
     }
@@ -102,7 +104,8 @@ void LPTF_Client::run()
         int activity = select(0, &readfds, nullptr, nullptr, &timeout);
         if (activity > 0 && FD_ISSET(socket.get_fd(), &readfds))
         {
-        if (!receivePacketAndPrint()) {
+            if (!receivePacketAndPrint())
+            {
                 cerr << "[Client] : Connection closed or failed during read.\n";
                 break;
             }
@@ -122,59 +125,59 @@ void LPTF_Client::run()
     }
 }
 
-void LPTF_Client::handleCommand(const LPTF_Packet& packet)
+void LPTF_Client::handleCommand(const LPTF_Packet &packet)
 {
     string payload(packet.getPayload().begin(), packet.getPayload().end());
     CommandType type = static_cast<CommandType>(packet.getType());
 
     switch (type)
     {
-        case CommandType::HOST_INFO_REQUEST:
-        {
-            string info = SystemInfo::getAllInfo();
-            sendPacketFromString(info, CommandType::HOST_INFO_RESPONSE);
-            break;
-        }
+    case CommandType::HOST_INFO_REQUEST:
+    {
+        string info = SystemInfo::getAllInfo();
+        sendPacketFromString(info, CommandType::HOST_INFO_RESPONSE);
+        break;
+    }
 
-        case CommandType::START_KEYLOGGER_REQUEST:
-        {
-            cout << "[Client] : Starting keylogger..." << endl;
-            break;
-        }
+    case CommandType::START_KEYLOGGER_REQUEST:
+    {
+        cout << "[Client] : Starting keylogger..." << endl;
+        break;
+    }
 
-        case CommandType::STOP_KEYLOGGER_REQUEST:
-        {
-            cout << "[Client] : Stopping keylogger..." << endl;
-            break;
-        }
-        case CommandType::LIST_PROCESSES_REQUEST:
+    case CommandType::STOP_KEYLOGGER_REQUEST:
+    {
+        cout << "[Client] : Stopping keylogger..." << endl;
+        break;
+    }
+    case CommandType::LIST_PROCESSES_REQUEST:
+    {
+        string processes = "[Fake process list]";
+        sendPacketFromString(processes, CommandType::PROCESS_LIST_RESPONSE);
+        break;
+    }
         {
             string processes = "[Fake process list]";
             sendPacketFromString(processes, CommandType::PROCESS_LIST_RESPONSE);
             break;
         }
-        {
-            string processes = "[Fake process list]";
-            sendPacketFromString(processes, CommandType::PROCESS_LIST_RESPONSE);
-            break;
-        }
 
-        case CommandType::EXECUTE_COMMAND_REQUEST:
-        {
-            string result = "[Command executed: " + payload + "]";
-            sendPacketFromString(result, CommandType::COMMAND_RESULT_RESPONSE);
-            break;
-        }
+    case CommandType::EXECUTE_COMMAND_REQUEST:
+    {
+        string result = "[Command executed: " + payload + "]";
+        sendPacketFromString(result, CommandType::COMMAND_RESULT_RESPONSE);
+        break;
+    }
 
-        case CommandType::SEND_MESSAGE:
-        {
-            cout << "[Server Message] : " << payload << endl;
-            break;
-        }
-        default:
-        {
-            cerr << "[Client] : Unknown command type received: " << static_cast<int>(packet.getType()) << endl;
-            break;
-        }
+    case CommandType::SEND_MESSAGE:
+    {
+        cout << "[Server Message] : " << payload << endl;
+        break;
+    }
+    default:
+    {
+        cerr << "[Client] : Unknown command type received: " << static_cast<int>(packet.getType()) << endl;
+        break;
+    }
     }
 }

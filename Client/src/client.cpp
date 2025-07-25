@@ -2,11 +2,9 @@
 using namespace std;
 
 int main() {
-    string ip;
+    string ip = "127.0.0.1";
     int port = 12345;
 
-    cout << endl << "Enter IP address : ";
-    getline(cin, ip);
     try {
         LPTF_Client client(ip, port);
         client.run();

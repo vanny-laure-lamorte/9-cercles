@@ -44,19 +44,10 @@ LPTF_Packet LPTF_Packet::deserialize(const vector<uint8_t> &data)
     {
         throw invalid_argument("Packet size mismatch");
     }
-    cout << "[PACKET SIZE] : " << static_cast<int>(totalSize) << endl;
     uint8_t version = data[2];
-    cout << "[PACKET VERSION] : " << static_cast<int>(version) << endl;
     uint8_t type = data[3];
-    printf("[PACKET TYPE] : 0x%02X\n", type);
     vector<uint8_t> payload(data.begin() + 4, data.end());
-    cout << "[PAYLOAD SIZE] : " << payload.size() << endl;
-    cout << "[PAYLOAD BYTES] : ";
-    for (const auto &byte : payload)
-    {
-        cout << static_cast<int>(byte) << " ";
-    }
-    cout << endl;
+
     return LPTF_Packet(type, payload);
 }
 
