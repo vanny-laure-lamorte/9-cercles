@@ -45,7 +45,7 @@ private:
     LPTF_Socket socket;
 
     // Sends a packet constructed from a string message
-    void sendPacketFromString(const std::string& message);
+    void sendPacketFromString(const std::string& message, CommandType type);
     // Receives a packet from the server and prints the response
     void receivePacketAndPrint();
 };

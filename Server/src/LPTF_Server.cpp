@@ -56,7 +56,7 @@ void LPTF_Server::handleClient(LPTF_Socket &clientSocket)
         string message(packet.getPayload().begin(), packet.getPayload().end());
         cout << "[CLIENT " << clientSocket.get_fd() << " MSG] : " << message << endl;
 
-        sendResponse(clientSocket, message);
+        sendPacketToClient(clientSocket, message, CommandType::SEND_MESSAGE);
     }
     catch (const exception &e)
     {
@@ -64,15 +64,25 @@ void LPTF_Server::handleClient(LPTF_Socket &clientSocket)
     }
 }
 
-void LPTF_Server::sendResponse(LPTF_Socket &clientSocket, const string &message)
+void LPTF_Server::sendPacketToClient(LPTF_Socket &clientSocket, const std::string &data, CommandType type)
 {
-    vector<uint8_t> payload(message.begin(), message.end());
-    LPTF_Packet response(0x05, payload);
-    auto serialized = response.serialize();
-
-    if (!clientSocket.sendAll(serialized.data(), serialized.size()))
+    if (data.empty())
     {
-        cerr << "Error sending response to client." << endl;
+        cerr << "Empty data, not sending response." << endl;
+        return;
+    }
+
+    cout << "[SERVER] Sending data to client " << clientSocket.get_fd() << ": " << data << endl;
+
+    {
+        vector<uint8_t> payload(data.begin(), data.end());
+        LPTF_Packet response(static_cast<uint8_t>(type), payload);
+        auto serialized = response.serialize();
+
+        if (!clientSocket.sendAll(serialized.data(), serialized.size()))
+        {
+            cerr << "Error sending data to client." << endl;
+        }
     }
 }
 

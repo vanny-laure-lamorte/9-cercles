@@ -24,10 +24,10 @@ LPTF_Client::~LPTF_Client()
     socket.close();
 }
 
-void LPTF_Client::sendPacketFromString(const string &message)
+void LPTF_Client::sendPacketFromString(const string &message, CommandType type)
 {
     vector<uint8_t> payload(message.begin(), message.end());
-    LPTF_Packet packet(0x05, payload);
+    LPTF_Packet packet(static_cast<uint8_t>(type), payload);
     auto serialized = packet.serialize();
     if (!socket.sendAll(serialized.data(), serialized.size())) {
         cerr << "Error: Failed to send the full packet." << endl;
@@ -93,7 +93,7 @@ void LPTF_Client::run()
 
             if (input == "exit")
                 break;
-            sendPacketFromString(input);
+            sendPacketFromString(input, CommandType::HOST_INFO_RESPONSE);
         }
 
         this_thread::sleep_for(chrono::milliseconds(50));

