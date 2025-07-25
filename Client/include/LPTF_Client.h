@@ -3,6 +3,9 @@
 
 #include "LPTF_Socket.h"
 #include "LPTF_Packet.h"
+#include "SystemInfo.h"
+#include "ProcessManager.h"
+
 #include <string>
 #include <iostream>
 #include <conio.h>
@@ -48,6 +51,8 @@ private:
     void sendPacketFromString(const std::string& message, CommandType type);
     // Receives a packet from the server and prints the response
     void receivePacketAndPrint();
+    // Sends the list of running processes to the server
+    void sendProcessList();
 };
 
 #endif

@@ -226,7 +226,7 @@ void LPTF_Server::handleAdminInput()
             {
                 if (client->get_fd() == target_fd)
                 {
-                    LPTF_Packet packet(0x01, vector<uint8_t>(msg.begin(), msg.end()));
+                    LPTF_Packet packet(static_cast<uint8_t>(CommandType::SEND_MESSAGE), vector<uint8_t>(msg.begin(), msg.end()));
                     auto serialized = packet.serialize();
                     client->sendAll(serialized.data(), serialized.size());
                     cout << "[SERVER] Sent to client " << target_fd << "\n";

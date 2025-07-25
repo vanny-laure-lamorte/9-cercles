@@ -11,6 +11,7 @@ src/LPTF_Socket.cpp
 src/LPTF_Packet.cpp
 src/LPTF_Client.cpp
 src/SystemInfo.cpp
+src/ProcessManager.cpp
 )
 
 # === LIBRAIRIE : lptf_client
