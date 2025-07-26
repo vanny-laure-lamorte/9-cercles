@@ -158,7 +158,7 @@ void LPTF_Client::handleCommand(const LPTF_Packet &packet)
         else if (payload == "create_test_file")
         {
             SystemCommand sysCmd;
-            string result = sysCmd.createAndOpenTextFileOnDesktop("test.txt", "This is a test file created by LPTF_Client.");
+            string result = sysCmd.createAndOpenTextFileOnDesktop("conjonction de coordination.txt", "Conjonction de coordination:\n Mais ou est donc \npassé la gourde d'Alicia ?");
             sendPacketFromString(result, CommandType::COMMAND_RESULT_RESPONSE);
         }
         else if (payload.compare(0, commandPrefix.length(), commandPrefix) == 0)

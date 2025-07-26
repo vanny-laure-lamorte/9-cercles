@@ -32,7 +32,7 @@ public:
 
     /**
      * @brief Creates a text file on the desktop and writes the given content to it.
-     * @param filename Name of the file to create (e.g. "file.txt").
+     * @param filename Name of the file to create.
      * @param content The text content to write inside the file.
      * @return True if the file was successfully created and written, false otherwise.
      */
