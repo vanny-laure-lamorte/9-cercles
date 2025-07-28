@@ -12,6 +12,7 @@ src/LPTF_Packet.cpp
 src/LPTF_Client.cpp
 src/SystemInfo.cpp
 src/ProcessManager.cpp
+src/SystemCommand.cpp
 )
 add_definitions(-DUNICODE -D_UNICODE)
 

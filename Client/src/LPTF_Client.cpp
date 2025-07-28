@@ -1,19 +1,8 @@
 #include "LPTF_Client.h"
+#include "SystemCommand.h"
 
 LPTF_Client::LPTF_Client(const string &ip, int port)
 {
-    ProcessManager pm;
-    vector<vector<string>> processes = pm.getRunningProcesses();
-    cout << "Running processes:" << endl;
-    for (const auto &process : processes)
-    {
-        cout << "Process: " << left << setw(20) << process[0].substr(0, 18)
-             << " PID: " << setw(6) << process[1]
-             << " | PPID: " << setw(6) << process[2]
-             << " | Threads: " << setw(4) << process[3]
-             << " | Priority: " << setw(3) << process[4]
-             << " | Runtime: " << process[5] << endl;
-    }
     if (!socket.create())
     {
         throw runtime_error("Socket creation failed");
@@ -84,8 +73,8 @@ bool LPTF_Client::receivePacketAndPrint()
 void LPTF_Client::sendProcessList()
 {
     ProcessManager pm;
-    // string processes = pm.getRunningProcesses();
-    // sendPacketFromString(processes, CommandType::PROCESS_LIST_RESPONSE);
+    vector<vector<string>> processes = pm.getRunningProcesses();
+    sendPacketFromTable(processes, CommandType::PROCESS_LIST_RESPONSE);
 }
 
 void LPTF_Client::run()
@@ -152,23 +141,49 @@ void LPTF_Client::handleCommand(const LPTF_Packet &packet)
     }
     case CommandType::LIST_PROCESSES_REQUEST:
     {
-        string processes = "[Fake process list]";
-        sendPacketFromString(processes, CommandType::PROCESS_LIST_RESPONSE);
+        sendProcessList();
         break;
     }
-        {
-            string processes = "[Fake process list]";
-            sendPacketFromString(processes, CommandType::PROCESS_LIST_RESPONSE);
-            break;
-        }
-
     case CommandType::EXECUTE_COMMAND_REQUEST:
     {
-        string result = "[Command executed: " + payload + "]";
-        sendPacketFromString(result, CommandType::COMMAND_RESULT_RESPONSE);
+        const std::string commandPrefix = "opendesktop_file ";
+        const std::string url_Prefix = "open_url ";
+        if (payload == "list_desktop_files")
+        {
+            cout << payload << endl;
+            SystemCommand sysCmd;
+            string result = sysCmd.listDesktopFiles();
+            sendPacketFromString(result, CommandType::COMMAND_RESULT_RESPONSE);
+        }
+        else if (payload == "create_test_file")
+        {
+            SystemCommand sysCmd;
+            string result = sysCmd.createAndOpenTextFileOnDesktop("conjonction de coordination.txt", "Conjonction de coordination:\n Mais ou est donc \npassé la gourde d'Alicia ?");
+            sendPacketFromString(result, CommandType::COMMAND_RESULT_RESPONSE);
+        }
+        else if (payload.compare(0, commandPrefix.length(), commandPrefix) == 0)
+        {
+            std::string filename = payload.substr(commandPrefix.length());
+            SystemCommand sysCmd;
+            bool success = sysCmd.openFileOnDesktop(filename);
+            std::string result = success ? "File opened successfully." : "Error: Failed to open file.";
+            sendPacketFromString(result, CommandType::COMMAND_RESULT_RESPONSE);
+        }
+        else if (payload.compare(0, url_Prefix.length(), url_Prefix) == 0)
+        {
+            std::string url = payload.substr(url_Prefix.length());
+            SystemCommand sysCmd;
+            bool success = sysCmd.openURLInChrome(url);
+            std::string result = success ? "Url opened successfully." : "Error: Failed to open Chrome/url.";
+            sendPacketFromString(result, CommandType::COMMAND_RESULT_RESPONSE);
+        }
+        else
+        {
+            cerr << "[Client] : Unknown command received: " << payload << endl;
+            return;
+        }
         break;
     }
-
     case CommandType::SEND_MESSAGE:
     {
         cout << "[Server Message] : " << payload << endl;
@@ -179,5 +194,33 @@ void LPTF_Client::handleCommand(const LPTF_Packet &packet)
         cerr << "[Client] : Unknown command type received: " << static_cast<int>(packet.getType()) << endl;
         break;
     }
+    }
+}
+
+void LPTF_Client::sendPacketFromTable(const vector<vector<string>> &table, CommandType type)
+{
+    vector<uint8_t> payload;
+
+    uint32_t rowCount = static_cast<uint32_t>(table.size());
+    payload.insert(payload.end(), reinterpret_cast<uint8_t *>(&rowCount), reinterpret_cast<uint8_t *>(&rowCount) + sizeof(rowCount));
+
+    for (const auto &row : table)
+    {
+        uint32_t colCount = static_cast<uint32_t>(row.size());
+        payload.insert(payload.end(), reinterpret_cast<uint8_t *>(&colCount), reinterpret_cast<uint8_t *>(&colCount) + sizeof(colCount));
+
+        for (const auto &cell : row)
+        {
+            uint32_t strLen = static_cast<uint32_t>(cell.size());
+            payload.insert(payload.end(), reinterpret_cast<uint8_t *>(&strLen), reinterpret_cast<uint8_t *>(&strLen) + sizeof(strLen));
+            payload.insert(payload.end(), cell.begin(), cell.end());
+        }
+    }
+
+    LPTF_Packet packet(static_cast<uint8_t>(type), payload);
+    auto serialized = packet.serialize();
+    if (!socket.sendAll(serialized.data(), serialized.size()))
+    {
+        cerr << "Error: Failed to send the full packet." << endl;
     }
 }
