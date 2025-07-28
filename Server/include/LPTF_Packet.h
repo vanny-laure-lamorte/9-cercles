@@ -8,6 +8,11 @@
 #include <vector>
 using namespace std;
 
+/**
+ * LPTF_Packet
+ * Represents a packet in the LPTF protocol.
+ * It contains a type, version, length, and payload.
+ */
 class LPTF_Packet
 {
 public:
@@ -39,4 +44,4 @@ private:
     uint16_t length;
     vector<uint8_t> payload;
 };
-#endif // LPTF_PACKET_HPP
+#endif // LPTF_PACKET_H

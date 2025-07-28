@@ -8,6 +8,7 @@ int main() {
         server.run();
     } catch (const exception& e) {
         cerr << "Error : " << e.what() << endl;
+
         return EXIT_FAILURE;
     }
 

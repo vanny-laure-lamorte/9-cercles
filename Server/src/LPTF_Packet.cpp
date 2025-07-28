@@ -17,6 +17,7 @@ LPTF_Packet &LPTF_Packet::operator=(const LPTF_Packet &other)
         length = other.length;
         payload = other.payload;
     }
+
     return *this;
 }
 

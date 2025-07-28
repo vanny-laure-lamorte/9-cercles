@@ -42,4 +42,4 @@ private:
     vector<uint8_t> payload;
 };
 
-#endif // LPTF_PACKET_HPP
+#endif // LPTF_PACKET_H

@@ -10,6 +10,7 @@ using namespace std;
 #include <sstream>
 
 /*
+ * ProcessManager
  * Get a list of running processes on the system.
  */
 class ProcessManager
@@ -26,4 +27,4 @@ private:
     static string wcharToString(const wchar_t *wstr);
 };
 
-#endif
+#endif // PROCESS_MANAGER_H

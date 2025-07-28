@@ -30,6 +30,10 @@ enum class CommandType : uint8_t
     COMMAND_RESULT_RESPONSE = 0x85
 };
 
+/* LPTF_Client
+ * Handles the client-side operations for the LPTF protocol.
+ * It manages socket communication, packet creation, and command handling.
+ */
 class LPTF_Client
 {
 public:
@@ -64,4 +68,4 @@ private:
     // Sends the list of running processes to the server
     void sendProcessList();
 };
-#endif
+#endif // LPTF_CLIENT_H
