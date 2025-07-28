@@ -11,6 +11,10 @@ using namespace std;
 
 #pragma comment(lib, "ws2_32.lib")
 
+/**
+ * Provides methods to create, connect, send, and receive data
+ * over a TCP socket.
+ */
 class LPTF_Socket
 {
 public:
@@ -56,4 +60,4 @@ private:
     static int socket_count;
 };
 
-#endif
+#endif // LPTF_SOCKET_H

@@ -61,7 +61,7 @@ void LPTF_Server::handleClient(LPTF_Socket &clientSocket)
     }
 }
 
-void LPTF_Server::sendPacketToClient(LPTF_Socket &clientSocket, const std::string &data, CommandType type)
+void LPTF_Server::sendPacketToClient(LPTF_Socket &clientSocket, const string &data, CommandType type)
 {
     if (data.empty())
     {
@@ -197,7 +197,7 @@ void LPTF_Server::handleAdminInput()
         if (cin.fail())
         {
             cin.clear();
-            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cout << "[SERVER MENU] Invalid input. Please enter a number.\n";
             return;
         }
@@ -246,7 +246,7 @@ void LPTF_Server::handleAdminInput()
                 if (cin.fail())
                 {
                     cin.clear();
-                    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
                     cout << "[SERVER MENU] Invalid input. Please enter a number.\n";
                     return;
                 }
@@ -373,7 +373,7 @@ vector<vector<string>> LPTF_Server::deserializeStringTable(const vector<uint8_t>
     auto read_uint32 = [&](uint32_t &value)
     {
         if (offset + sizeof(uint32_t) > payload.size())
-            throw std::runtime_error("Invalid payload");
+            throw runtime_error("Invalid payload");
         value = *reinterpret_cast<const uint32_t *>(&payload[offset]);
         offset += sizeof(uint32_t);
     };
@@ -393,7 +393,7 @@ vector<vector<string>> LPTF_Server::deserializeStringTable(const vector<uint8_t>
             read_uint32(strLen);
 
             if (offset + strLen > payload.size())
-                throw std::runtime_error("Invalid payload");
+                throw runtime_error("Invalid payload");
 
             string cell(payload.begin() + offset, payload.begin() + offset + strLen);
             offset += strLen;

@@ -67,6 +67,7 @@ bool LPTF_Client::receivePacketAndPrint()
         cerr << "Error: Deserialization failed - " << e.what() << endl;
         return false;
     }
+
     return true;
 }
 

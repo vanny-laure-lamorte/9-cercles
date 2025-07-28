@@ -44,29 +44,6 @@
 
 ---
 
-## 🛠️ Commandes de compilation
-
-### 🔹 Client
-
-```bash
-cmake -S ./client -B client/build -G "Ninja"
-cmake --build client/build
-ctest --test-dir client/build --output-on-failure
-.\client\build\client_tests.exe
-.\client\client.exe
-```
-
-### 🔹 Server
-
-```bash
-cmake -S ./server -B server/build -G "Ninja"
-cmake --build server/build
-ctest --test-dir server/build --output-on-failure
-.\server\build\server_tests.exe
-.\server\server.exe
-```
----
-
 **Deuxième cercle (v2.0)**
 
 ## 🧱 Structure des Classes Principales
@@ -111,6 +88,39 @@ ctest --test-dir server/build --output-on-failure
 
 ---
 
+## 🧱 Troisième cercle (v3.0)
+
+### 🔷 Nouvelles classes
+
+- **`SystemInfo`**
+  - Retourne le nom du PC, le nom d’utilisateur et l’OS.
+
+- **`ProcessManager`**
+  - Récupère la liste des processus en cours.
+  - Détails : nom, PID, parent PID, threads, priorité, runtime.
+
+- **`SystemCommand`**
+  - Lister les fichiers du Bureau.
+  - Créer un fichier texte sur le Bureau et l’ouvrir.
+  - Ouvrir n’importe quel fichier du Bureau (`.exe`, `.txt`, `.pdf`, etc.).
+  - Ouvrir Chrome avec une URL donnée.
+
+- **`KeyLogger`**
+  - (Structure initiale) Prépare la capture des frappes clavier, activable/désactivable.
+
+---
+
+### 🔷 Nouvel Enum (`CommandType`)
+
+| CommandType                  | Description                                               |
+|------------------------------|-----------------------------------------------------------|
+| `HOST_INFO_REQUEST`          | Retourne les infos système de l’hôte                     |
+| `LIST_PROCESSES_REQUEST`     | Retourne la liste des processus en cours                  |
+| `EXECUTE_COMMAND_REQUEST`    | Exécute une commande système (voir ci-dessous)            |
+| `COMMAND_RESULT_RESPONSE`    | Retour d’une commande exécutée                           |
+| `SEND_MESSAGE`               | Transmission d’un message texte                          |
+etc...
+
 ## 🧪 Tests
 - Utilisation de [Catch2](https://github.com/catchorg/Catch2) pour tester :
   - Création et fermeture de sockets
@@ -120,9 +130,25 @@ ctest --test-dir server/build --output-on-failure
 
 ---
 
-## 🚀 Lancer le projet
+## 🛠️ Commandes de compilation
 
-### Côté serveur
+### 🔹 Client
+
 ```bash
-cd Server/build
-./server.exe
+cmake -S ./client -B client/build -G "Ninja"
+cmake --build client/build
+ctest --test-dir client/build --output-on-failure
+.\client\build\client_tests.exe
+.\client\client.exe
+```
+
+### 🔹 Server
+
+```bash
+cmake -S ./server -B server/build -G "Ninja"
+cmake --build server/build
+ctest --test-dir server/build --output-on-failure
+.\server\build\server_tests.exe
+.\server\server.exe
+```
+---

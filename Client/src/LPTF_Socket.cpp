@@ -99,6 +99,7 @@ int LPTF_Socket::select_sockets(vector<LPTF_Socket *> &sockets, int timeout_ms)
         }
         sockets = ready_sockets;
     }
+
     return result;
 }
 
@@ -133,5 +134,6 @@ bool LPTF_Socket::receiveAllPackets(void *buffer, int len)
         }
         total_received += received;
     }
+
     return true;
 }

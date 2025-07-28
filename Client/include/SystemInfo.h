@@ -37,4 +37,4 @@ private:
     const static string DEFAULT_OS_LANGUAGE;
 };
 
-#endif
+#endif // SYSTEM_INFO_H
