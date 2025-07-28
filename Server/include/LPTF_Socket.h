@@ -12,6 +12,10 @@ using namespace std;
 #include <string>
 #include <vector>
 
+/** LPTF_Socket
+ * Provides methods to create, connect, send, and receive data
+ * over a TCP socket.
+*/
 class LPTF_Socket
 {
 public:
@@ -66,4 +70,4 @@ private:
     // Count of active sockets for managing Winsock startup/cleanup
     static int socket_count;
 };
-#endif
+#endif // LPTF_SOCKET_H

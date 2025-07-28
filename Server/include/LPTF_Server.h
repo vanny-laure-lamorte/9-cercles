@@ -27,6 +27,11 @@ enum class CommandType : uint8_t {
     COMMAND_RESULT_RESPONSE = 0x85
 };
 
+/**
+ * LPTF_Server
+ * Handles the server-side operations for the LPTF protocol.
+ * It manages socket communication, packet creation, and command handling.
+ */
 class LPTF_Server : public QObject {
     Q_OBJECT
 
@@ -57,5 +62,4 @@ private:
     void handleCommand(const LPTF_Packet &packet);
     std::vector<std::vector<std::string>> deserializeStringTable(const std::vector<uint8_t>& payload);
 };
-
-#endif // LPTF_SERVER_HPP
+#endif // LPTF_SERVER_H

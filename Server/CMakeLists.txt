@@ -10,7 +10,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
 # === HEADERS & SOURCES ===
-file(GLOB HEADER_FILES 
+file(GLOB HEADER_FILES
 "include/*.h"
 )
 set(SOCKET_SOURCES
@@ -58,7 +58,7 @@ set_target_properties(server_gui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOU
 # )
 # FetchContent_MakeAvailable(Catch2)
 
-# add_executable(server_tests 
+# add_executable(server_tests
 # test/test_socket.cpp
 # test/test_packet.cpp)
 # target_link_libraries(server_tests PRIVATE lptf_server Catch2::Catch2WithMain ws2_32)

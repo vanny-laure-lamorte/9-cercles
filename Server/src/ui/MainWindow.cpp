@@ -1,5 +1,4 @@
 #include "MainWindow.h"
-#include "ui_mainwindow.h"
 #include "DashboardWidget.h"
 #include "InfoSystemWidget.h"
 #include "ProcessManagerWidget.h"
