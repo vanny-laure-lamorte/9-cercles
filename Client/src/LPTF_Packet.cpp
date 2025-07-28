@@ -15,11 +15,12 @@ LPTF_Packet &LPTF_Packet::operator=(const LPTF_Packet &other)
         length = other.length;
         payload = other.payload;
     }
+
     return *this;
 }
 
-std::vector<uint8_t> LPTF_Packet::serialize() const {
-    std::vector<uint8_t> buffer;
+vector<uint8_t> LPTF_Packet::serialize() const {
+    vector<uint8_t> buffer;
     uint16_t totalSize = 2 + 1 + 1 + payload.size();
     buffer.push_back((totalSize >> 8) & 0xFF);
     buffer.push_back(totalSize & 0xFF);

@@ -25,3 +25,25 @@
   - Vérification de la sérialisation / désérialisation
   - Cas d’erreurs (paquets invalides, versions non supportées…)
 - Première étape vers un protocole **commun, structuré et interopérable**, base du dialogue à travers les cercles.
+
+## [v3.0] - 2025-07-28
+### Cercle 3 : Logiciels curieux et avides
+Ajout de nouvelles fonctionnalités côté Client pour répondre aux demandes du serveur :
+
+- Récupération des informations système (nom de l’ordinateur, utilisateur connecté, système d’exploitation et langue du système).
+
+- Retour de la liste des processus en cours d’exécution avec détails (PID, threads, priorité, runtime).
+
+- Exécution de commandes système :
+  - Lister les fichiers du Bureau
+  - Créer un fichier texte sur le Bureau et écrire du contenu
+  - Ouvrir des fichiers ou programmes présents sur le Bureau
+
+- Nouvelles classes dédiées :
+  - `SystemInfo` : collecte des informations système de l’hôte.
+  - `ProcessManager` : gestion et récupération des processus actifs.
+  - `SystemCommand` : exécution de commandes système (listage, création, ouverture de fichiers).
+
+- Évolution du protocole binaire :
+  - Ajout de nouveaux types de commandes (`LIST_PROCESSES_REQUEST`, `EXECUTE_COMMAND_REQUEST`, `HOST_INFO_REQUEST`, etc.).
+  - Gestion des réponses structurées et affichage côté serveur.

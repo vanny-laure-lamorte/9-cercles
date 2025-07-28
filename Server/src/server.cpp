@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
         LPTF_Server server("127.0.0.1", 12345);
         //server.run();
     } catch (const std::exception& e) {
-        std::cerr << "Error : " << e.what() << std::endl;
+        cerr << "Error : " << e.what() << std::endl;
         return EXIT_FAILURE;
     }
 

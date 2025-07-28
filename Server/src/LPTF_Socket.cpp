@@ -31,6 +31,7 @@ LPTF_Socket::~LPTF_Socket()
 bool LPTF_Socket::create()
 {
     sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+
     return sockfd != INVALID_SOCKET;
 }
 
@@ -54,6 +55,7 @@ SOCKET LPTF_Socket::accept()
     cout << "Accepting new connection..." << endl;
     sockaddr_in clientAddr;
     int addrLen = sizeof(clientAddr);
+
     return ::accept(sockfd, (sockaddr *)&clientAddr, &addrLen);
 }
 
@@ -91,6 +93,7 @@ bool LPTF_Socket::receiveAllPackets(void *buffer, int len)
             return false;
         totalReceived += received;
     }
+
     return true;
 }
 
@@ -150,6 +153,7 @@ int LPTF_Socket::select_sockets(vector<LPTF_Socket *> &sockets, int timeout_ms)
         }
         sockets = ready_sockets;
     }
+
     return result;
 }
 

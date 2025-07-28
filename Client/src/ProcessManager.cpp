@@ -18,7 +18,7 @@ vector<vector<string>> ProcessManager::getRunningProcesses()
         do
         {
             vector<string> processInfo;
-            std::string exeName = wcharToString(processEntry.szExeFile);
+            string exeName = wcharToString(processEntry.szExeFile);
             processInfo.push_back(exeName);
             processInfo.push_back(to_string(processEntry.th32ProcessID));
             processInfo.push_back(to_string(processEntry.th32ParentProcessID));
@@ -30,6 +30,7 @@ vector<vector<string>> ProcessManager::getRunningProcesses()
     }
 
     CloseHandle(snapshot);
+
     return processCombined;
 }
 
@@ -58,10 +59,11 @@ string ProcessManager::getProcessRuntime(DWORD pid)
     ULONGLONG uptime = now - creation;
     ULONGLONG seconds = uptime / 10000000;
 
-    std::ostringstream oss;
+    ostringstream oss;
     oss << (seconds / 3600) << "h "
         << ((seconds % 3600) / 60) << "m "
         << (seconds % 60) << "s";
+
     return oss.str();
 }
 
@@ -71,7 +73,8 @@ string ProcessManager::wcharToString(const wchar_t *wstr)
         return "";
 
     int size_needed = WideCharToMultiByte(CP_UTF8, 0, wstr, -1, nullptr, 0, nullptr, nullptr);
-    std::string result(size_needed - 1, 0);
+    string result(size_needed - 1, 0);
     WideCharToMultiByte(CP_UTF8, 0, wstr, -1, &result[0], size_needed, nullptr, nullptr);
+
     return result;
 }
