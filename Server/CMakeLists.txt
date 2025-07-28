@@ -3,22 +3,44 @@ project(server)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
+
+# === QT ===
+find_package(Qt6 COMPONENTS Widgets REQUIRED)
+
 
 # === HEADERS & SOURCES ===
 file(GLOB HEADER_FILES "include/*.h")
+
 set(SOCKET_SOURCES
 src/LPTF_Socket.cpp
 src/LPTF_Packet.cpp
-src/LPTF_Server.cpp)
+src/LPTF_Server.cpp
+src/mainwindow.cpp
+)
 
 # === LIBRAIRIES : lptf_server
-add_library(lptf_server STATIC ${SOCKET_SOURCES} ${HEADER_FILES})
+add_library(lptf_server STATIC
+    ${SOCKET_SOURCES}
+    ${HEADER_FILES}
+    ${RESOURCE_FILES}
+    src/mainwindow.ui
+)
+
 target_include_directories(lptf_server PUBLIC include)
+target_link_libraries(lptf_server PUBLIC Qt6::Widgets)
 
 # === PRINCIPAL : server
-add_executable(server src/server.cpp)
+add_executable(server
+    src/server.cpp
+   )
+
 target_link_libraries(server PRIVATE lptf_server ws2_32)
-set_target_properties(server PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
+
+set_target_properties(server PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
 
 # # === TESTS ===
 # include(FetchContent)

@@ -1,15 +1,22 @@
 #include "LPTF_Server.h"
+#include "mainwindow.h"           // Ta classe Qt
+#include <QApplication>           // Qt GUI
 #include <iostream>
-using namespace std;
 
-int main() {
+int main(int argc, char *argv[]) {
+    QApplication app(argc, argv);  // Qt initialise l’interface graphique
+
+    // Lancer ton serveur
     try {
         LPTF_Server server("127.0.0.1", 12345);
-        server.run();
-    } catch (const exception& e) {
-        cerr << "Error : " << e.what() << endl;
+        //server.run();
+    } catch (const std::exception& e) {
+        std::cerr << "Error : " << e.what() << std::endl;
         return EXIT_FAILURE;
     }
 
-    return EXIT_SUCCESS;
+    MainWindow window;
+    window.show();
+
+    return app.exec();
 }
