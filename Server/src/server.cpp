@@ -1,23 +1,16 @@
 #include "LPTF_Server.h"
-#include "mainwindow.h"
-#include <QApplication>
 #include <iostream>
+using namespace std;
 
-int main(int argc, char *argv[]) {
-    QApplication app(argc, argv);
-
-    // Lancer ton serveur
+int main() {
     try {
         LPTF_Server server("127.0.0.1", 12345);
-        //server.run();
-    } catch (const std::exception& e) {
-        cerr << "Error : " << e.what() << std::endl;
+        server.run();
+    } catch (const exception& e) {
+        cerr << "Error : " << e.what() << endl;
+
         return EXIT_FAILURE;
     }
 
-    MainWindow window;
-
-    window.show();
-
-    return app.exec();
+    return EXIT_SUCCESS;
 }

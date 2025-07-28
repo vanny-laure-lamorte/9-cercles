@@ -23,7 +23,6 @@
   </property>
   <property name="styleSheet">
    <string notr="true">background-image: url(:/assets/background-3.jpg);
-background-size: cover;
 background-repeat: no-repeat;
 background-position: center;
 
@@ -141,7 +140,7 @@ background-color: none;</string>
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="../resources.qrc">:/assets/arrow_pink.png</pixmap>
+       <pixmap resource="../../resources.qrc">:/assets/arrow_pink.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -254,7 +253,7 @@ text-align: left;</string>
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../resources.qrc">:/assets/group.png</pixmap>
+      <pixmap resource="../../resources.qrc">:/assets/group.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -276,7 +275,7 @@ text-align: left;</string>
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../resources.qrc">:/assets/calendar.png</pixmap>
+      <pixmap resource="../../resources.qrc">:/assets/calendar.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -298,7 +297,7 @@ text-align: left;</string>
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../resources.qrc">:/assets/exit.png</pixmap>
+      <pixmap resource="../../resources.qrc">:/assets/exit.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -402,7 +401,7 @@ background-color: transparent;</string>
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../resources.qrc">:/assets/title.png</pixmap>
+      <pixmap resource="../../resources.qrc">:/assets/title.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -468,7 +467,7 @@ background-color: none;</string>
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="../resources.qrc">:/assets/arrow_pink.png</pixmap>
+       <pixmap resource="../../resources.qrc">:/assets/arrow_pink.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -589,7 +588,7 @@ background-color: none;</string>
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="../resources.qrc">:/assets/arrow_pink.png</pixmap>
+       <pixmap resource="../../resources.qrc">:/assets/arrow_pink.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -710,7 +709,7 @@ background-color: none;</string>
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="../resources.qrc">:/assets/arrow_pink.png</pixmap>
+       <pixmap resource="../../resources.qrc">:/assets/arrow_pink.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -831,7 +830,7 @@ background-color: none;</string>
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="../resources.qrc">:/assets/arrow_pink.png</pixmap>
+       <pixmap resource="../../resources.qrc">:/assets/arrow_pink.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -952,7 +951,7 @@ background-color: none;</string>
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="../resources.qrc">:/assets/arrow_pink.png</pixmap>
+       <pixmap resource="../../resources.qrc">:/assets/arrow_pink.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -1073,7 +1072,7 @@ background-color: none;</string>
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="../resources.qrc">:/assets/arrow_pink.png</pixmap>
+       <pixmap resource="../../resources.qrc">:/assets/arrow_pink.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -1194,7 +1193,7 @@ background-color: none;</string>
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="../resources.qrc">:/assets/arrow_pink.png</pixmap>
+       <pixmap resource="../../resources.qrc">:/assets/arrow_pink.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -1315,7 +1314,7 @@ background-color: none;</string>
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="../resources.qrc">:/assets/arrow_pink.png</pixmap>
+       <pixmap resource="../../resources.qrc">:/assets/arrow_pink.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -1436,7 +1435,7 @@ background-color: none;</string>
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="../resources.qrc">:/assets/arrow_pink.png</pixmap>
+       <pixmap resource="../../resources.qrc">:/assets/arrow_pink.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -1851,7 +1850,7 @@ background-color: #3D0E0E;</string>
   </widget>
  </widget>
  <resources>
-  <include location="../resources.qrc"/>
+  <include location="../../resources.qrc"/>
  </resources>
  <connections/>
 </ui>

@@ -147,8 +147,8 @@ void LPTF_Client::handleCommand(const LPTF_Packet &packet)
     }
     case CommandType::EXECUTE_COMMAND_REQUEST:
     {
-        const std::string commandPrefix = "opendesktop_file ";
-        const std::string url_Prefix = "open_url ";
+        const string commandPrefix = "opendesktop_file ";
+        const string url_Prefix = "open_url ";
         if (payload == "list_desktop_files")
         {
             cout << payload << endl;
@@ -164,18 +164,18 @@ void LPTF_Client::handleCommand(const LPTF_Packet &packet)
         }
         else if (payload.compare(0, commandPrefix.length(), commandPrefix) == 0)
         {
-            std::string filename = payload.substr(commandPrefix.length());
+            string filename = payload.substr(commandPrefix.length());
             SystemCommand sysCmd;
             bool success = sysCmd.openFileOnDesktop(filename);
-            std::string result = success ? "File opened successfully." : "Error: Failed to open file.";
+            string result = success ? "File opened successfully." : "Error: Failed to open file.";
             sendPacketFromString(result, CommandType::COMMAND_RESULT_RESPONSE);
         }
         else if (payload.compare(0, url_Prefix.length(), url_Prefix) == 0)
         {
-            std::string url = payload.substr(url_Prefix.length());
+            string url = payload.substr(url_Prefix.length());
             SystemCommand sysCmd;
             bool success = sysCmd.openURLInChrome(url);
-            std::string result = success ? "Url opened successfully." : "Error: Failed to open Chrome/url.";
+            string result = success ? "Url opened successfully." : "Error: Failed to open Chrome/url.";
             sendPacketFromString(result, CommandType::COMMAND_RESULT_RESPONSE);
         }
         else
