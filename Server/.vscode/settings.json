@@ -59,6 +59,18 @@
     "text_encoding": "cpp",
     "cinttypes": "cpp",
     "typeinfo": "cpp",
-    "variant": "cpp"
-  }
+    "variant": "cpp",
+    "codecvt": "cpp",
+    "condition_variable": "cpp",
+    "unordered_set": "cpp",
+    "future": "cpp",
+    "mutex": "cpp",
+    "ranges": "cpp",
+    "semaphore": "cpp",
+    "stdfloat": "cpp",
+    "stop_token": "cpp",
+    "thread": "cpp",
+    "qvboxlayout": "cpp"
+  },
+  "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
 }
