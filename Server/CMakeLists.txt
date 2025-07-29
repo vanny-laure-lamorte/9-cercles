@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.10)
 project(server LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 17) # Qt5 fonctionne mieux en 17
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# === Activer Qt Meta-Object Compiler (moc, uic, rcc) ===
+# === Enable Qt MOC, UIC, RCC ===
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
@@ -50,7 +50,26 @@ target_include_directories(server_gui PRIVATE ${CMAKE_SOURCE_DIR}/include ${CMAK
 
 set_target_properties(server_gui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
 
-# # === TESTS ===
+# === GUI executable (server_gui.exe) ===
+
+add_executable(server_gui
+    src/server_gui.cpp
+    src/ui/DashboardWidget.cpp
+    src/ui/InfoSystemWidget.cpp
+    src/ui/ProcessManagerWidget.cpp
+    src/ui/MainWindow.cpp
+    include/ui/DashboardWidget.h
+    include/ui/InfoSystemWidget.h
+    include/ui/ProcessManagerWidget.h
+    include/ui/MainWindow.h
+    src/ui/mainwindow.ui
+    resources.qrc
+)
+target_include_directories(server_gui PRIVATE ${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/include/ui)
+target_link_libraries(server_gui PRIVATE lptf_server Qt6::Core Qt6::Widgets ws2_32)
+set_target_properties(server_gui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
+
+# === Tests (optional) ===
 # include(FetchContent)
 # FetchContent_Declare(
 #   Catch2
@@ -64,6 +83,6 @@ set_target_properties(server_gui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOU
 # test/test_packet.cpp)
 # target_link_libraries(server_tests PRIVATE lptf_server Catch2::Catch2WithMain ws2_32)
 # target_include_directories(server_tests PRIVATE include)
-
+#
 # enable_testing()
 # add_test(NAME ServerTests COMMAND server_tests)
