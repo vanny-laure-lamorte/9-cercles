@@ -3,7 +3,7 @@
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
-    
+
     qRegisterMetaType<std::vector<std::vector<std::string>>>("std::vector<std::vector<std::string>>");
 
     MainWindow mainWindow;
