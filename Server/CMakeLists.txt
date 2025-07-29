@@ -31,25 +31,6 @@ add_executable(server src/server.cpp)
 target_link_libraries(server PRIVATE lptf_server Qt5::Core ws2_32)
 set_target_properties(server PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
 
-# === EXECUTABLE GUI ===
-add_executable(server_gui
-    src/server_gui.cpp
-    src/ui/MainWindow.cpp
-    src/ui/DashboardWidget.cpp
-    src/ui/InfoSystemWidget.cpp
-    src/ui/ProcessManagerWidget.cpp
-    include/ui/MainWindow.h
-    include/ui/DashboardWidget.h
-    include/ui/InfoSystemWidget.h
-    include/ui/ProcessManagerWidget.h
-    resources.qrc
-)
-
-target_link_libraries(server_gui PRIVATE lptf_server Qt5::Widgets ws2_32)
-target_include_directories(server_gui PRIVATE ${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/include/ui)
-
-set_target_properties(server_gui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
-
 # === GUI executable (server_gui.exe) ===
 
 add_executable(server_gui
@@ -66,7 +47,7 @@ add_executable(server_gui
     resources.qrc
 )
 target_include_directories(server_gui PRIVATE ${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/include/ui)
-target_link_libraries(server_gui PRIVATE lptf_server Qt6::Core Qt6::Widgets ws2_32)
+target_link_libraries(server_gui PRIVATE lptf_server Qt5::Core Qt5::Widgets ws2_32)
 set_target_properties(server_gui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
 
 # === Tests (optional) ===
