@@ -19,16 +19,24 @@ set(SOCKET_SOURCES
     src/LPTF_Server.cpp
 )
 
-find_package(Qt5 REQUIRED COMPONENTS Core Widgets)
+find_package(Qt6 COMPONENTS Core Widgets QUIET)
+if(Qt6_FOUND)
+    set(QT_VERSION 6)
+    set(QT_PREFIX Qt6)
+else()
+    find_package(Qt5 REQUIRED COMPONENTS Core Widgets)
+    set(QT_VERSION 5)
+    set(QT_PREFIX Qt5)
+endif()
 
 # === LIBRAIRIE serveur ===
 add_library(lptf_server STATIC ${SOCKET_SOURCES} ${HEADER_FILES})
 target_include_directories(lptf_server PUBLIC ${CMAKE_SOURCE_DIR}/include)
-target_link_libraries(lptf_server PUBLIC Qt5::Core ws2_32)
+target_link_libraries(lptf_server PUBLIC ${QT_PREFIX}::Core ws2_32)
 
 # === EXECUTABLE CONSOLE ===
 add_executable(server src/server.cpp)
-target_link_libraries(server PRIVATE lptf_server Qt5::Core ws2_32)
+target_link_libraries(server PRIVATE lptf_server ${QT_PREFIX}::Core ws2_32)
 set_target_properties(server PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
 
 # === GUI executable (server_gui.exe) ===
@@ -47,7 +55,7 @@ add_executable(server_gui
     resources.qrc
 )
 target_include_directories(server_gui PRIVATE ${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/include/ui)
-target_link_libraries(server_gui PRIVATE lptf_server Qt5::Core Qt5::Widgets ws2_32)
+target_link_libraries(server_gui PRIVATE lptf_server ${QT_PREFIX}::Core ${QT_PREFIX}::Widgets ws2_32)
 set_target_properties(server_gui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
 
 # === Tests (optional) ===
