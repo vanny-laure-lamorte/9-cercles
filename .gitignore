@@ -6,6 +6,10 @@ Client/.vscode/
 Server/build/
 Server/.vscode/
 
-*.exe
+# UI
+CMakeLists.txt.user
 
+# COMMON
+*.exe
 .github
+
