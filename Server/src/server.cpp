@@ -1,10 +1,10 @@
 #include "LPTF_Server.h"
-#include "mainwindow.h"           // Ta classe Qt
-#include <QApplication>           // Qt GUI
+#include "mainwindow.h"
+#include <QApplication>
 #include <iostream>
 
 int main(int argc, char *argv[]) {
-    QApplication app(argc, argv);  // Qt initialise l’interface graphique
+    QApplication app(argc, argv);
 
     // Lancer ton serveur
     try {
@@ -16,6 +16,7 @@ int main(int argc, char *argv[]) {
     }
 
     MainWindow window;
+
     window.show();
 
     return app.exec();

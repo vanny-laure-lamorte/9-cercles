@@ -27,14 +27,17 @@ add_library(lptf_server STATIC
     ${HEADER_FILES}
     ${RESOURCE_FILES}
     src/mainwindow.ui
+    resources.qrc
 )
 
 target_include_directories(lptf_server PUBLIC include)
 target_link_libraries(lptf_server PUBLIC Qt6::Widgets)
+qt6_add_resources(RESOURCES resources.qrc)
 
 # === PRINCIPAL : server
 add_executable(server
     src/server.cpp
+    ${RESOURCES}
    )
 
 target_link_libraries(server PRIVATE lptf_server ws2_32)
