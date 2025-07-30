@@ -6,7 +6,6 @@
         <file>assets/logo_6.jpg</file>
         <file>assets/logo_7.jpg</file>
         <file>assets/logo_8.jpg</file>
-        <file>assets/logo_9.jpg</file>
         <file>assets/logo_10.jpg</file>
         <file>assets/logo_11.jpg</file>
         <file>assets/logo_12.jpg</file>
@@ -25,5 +24,6 @@
         <file>assets/exit.png</file>
         <file>assets/title.png</file>
         <file>assets/background-3.jpg</file>
+        <file>assets/logo_9.png</file>
     </qresource>
 </RCC>

@@ -56,7 +56,7 @@ void LPTF_Server::handleClient(LPTF_Socket &clientSocket)
     try
     {
         LPTF_Packet packet = LPTF_Packet::deserialize(data);
-        handleCommand(packet);
+        handleCommand(packet, clientSocket);
     }
     catch (const std::exception &e)
     {
@@ -107,7 +107,9 @@ void LPTF_Server::handleConnection()
             auto *newClient = new LPTF_Socket();
             newClient->setSocket(newSock);
             clientSockets.push_back(newClient);
+            QString socketStr = QString::number(newClient->get_fd());
             emit clientCountChanged(clientSockets.size());
+            emit clientConnected(socketStr);
             qDebug() << "[SERVER] Client connected! Total clients:"
                      << clientSockets.size();
         }
@@ -167,10 +169,12 @@ void LPTF_Server::run()
                 else if (result == 0 ||
                          (result == -1 && WSAGetLastError() == WSAECONNRESET))
                 {
+                    QString socketStr = QString::number(client->get_fd());
                     client->close();
                     delete client;
                     it = clientSockets.erase(it);
                     emit clientCountChanged(clientSockets.size());
+                    emit clientDisconnected(socketStr);
                     qDebug() << "[SERVER] Client disconnected. Total:"
                              << clientSockets.size();
                 }
@@ -298,7 +302,7 @@ void LPTF_Server::handleAdminInput()
     }
 }
 
-void LPTF_Server::handleCommand(const LPTF_Packet &packet)
+void LPTF_Server::handleCommand(const LPTF_Packet &packet, LPTF_Socket &clientSocket)
 {
     std::string data(packet.getPayload().begin(), packet.getPayload().end());
     CommandType type = static_cast<CommandType>(packet.getType());
@@ -306,10 +310,13 @@ void LPTF_Server::handleCommand(const LPTF_Packet &packet)
     switch (type)
     {
     case CommandType::HOST_INFO_RESPONSE:
+    {
         cout << data << endl;
-        emit systemInfoReceived(QString::fromStdString(data));
+        QString socketStr = QString::number(clientSocket.get_fd());
+        emit systemInfoReceived(QString::fromStdString(data), socketStr);
+        qDebug() << "[SERVER] Host info received, emitting signal.";
         break;
-
+    }
     case CommandType::LIST_PROCESSES_RESPONSE:
     {
         auto processes = deserializeStringTable(packet.getPayload());
@@ -384,6 +391,7 @@ LPTF_Server::deserializeStringTable(const std::vector<uint8_t> &payload)
 
 void LPTF_Server::sendSystemInfoRequest()
 {
+    qDebug() << "[SERVER] Sending system info request to clients...";
     if (clientSockets.empty())
     {
         qDebug() << "[SERVER] No client connected.";
@@ -410,4 +418,16 @@ void LPTF_Server::sendProcessListRequest()
         sendPacketToClient(*client, "> Requesting process list",
                            CommandType::LIST_PROCESSES_REQUEST);
     }
+}
+
+void LPTF_Server::sendSystemInfoRequestFor(const QString &socketId) {
+    for (auto *client : clientSockets) {
+        if (QString::number(client->get_fd()) == socketId) {
+            sendPacketToClient(*client, "> Requesting host info",
+                               CommandType::HOST_INFO_REQUEST);
+            qDebug() << "[SERVER] Sent system info request to client:" << socketId;
+            return;
+        }
+    }
+    qWarning() << "[SERVER] No client found for socketId:" << socketId;
 }

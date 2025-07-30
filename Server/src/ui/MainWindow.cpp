@@ -1,69 +1,71 @@
 #include "MainWindow.h"
 #include "ui_mainwindow.h"
-#include "DashboardWidget.h"
-#include "InfoSystemWidget.h"
-#include "ProcessManagerWidget.h"
-#include "LPTF_Server.h"
-#include <QHBoxLayout>
+#include <QDebug>
 #include <QThread>
 
-
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    server = new LPTF_Server("127.0.0.1", 12345);
+    infoWidget = new InfoSystemWidget(this, ui->display_info_box, ui->top_title, ui->top_subtitle, ui->top_rect);
+
+    clientLabel = ui->user_text_number;
+    systemInfoButton = ui->btn_1;
+    displayProcessesButton = ui->btn_2;
+
+    connect(this, &MainWindow::requestSystemInfo,
+            server, &LPTF_Server::sendSystemInfoRequest);
+
+    connect(this, &MainWindow::requestProcessList,
+            server, &LPTF_Server::sendProcessListRequest);
+
+    connect(server, &LPTF_Server::clientCountChanged,
+            this, &MainWindow::updateClientCount);
+
+    connect(server, &LPTF_Server::systemInfoReceived,
+            infoWidget, &InfoSystemWidget::displaySystemInfo);
+
+    connect(infoWidget, &InfoSystemWidget::clientSelected,
+            server, &LPTF_Server::sendSystemInfoRequestFor);
+
+    connect(server, &LPTF_Server::clientConnected,
+            infoWidget, &InfoSystemWidget::addClient);
+
+    connect(server, &LPTF_Server::clientDisconnected,
+            infoWidget, &InfoSystemWidget::removeClient);
+
+    connect(systemInfoButton, &QPushButton::clicked, this, [this] {
+        qDebug() << "System Info activated!";
+        infoWidget->setActive(true);
+    });
+
+    connect(displayProcessesButton, &QPushButton::clicked, this, [this] {
+        qDebug() << "Button processList clicked!";
+        emit requestProcessList();
+    });
+
+    serverThread = QThread::create([this] { server->run(); });
+    serverThread->start();
 }
 
 MainWindow::~MainWindow()
 {
+    serverThread->quit();
+    serverThread->wait();
+    delete server;
     delete ui;
 }
 
-// MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
-// {
-//         QWidget *central = new QWidget(this);
-//         setCentralWidget(central);
+void MainWindow::updateClientCount(int count)
+{
+    qDebug() << "Updating client count to:" << count;
+    clientLabel->setText(QString::number(count));
+}
 
-//         QHBoxLayout *layout = new QHBoxLayout(central);
-
-//         dashboard = new DashboardWidget(this);
-//         pages = new QStackedWidget(this);
-
-//         infoWidget = new InfoSystemWidget(this);
-//         processManagerWidget = new ProcessManagerWidget(this);
-
-//         pages->addWidget(infoWidget);
-//         pages->addWidget(processManagerWidget);
-
-//         layout->addWidget(dashboard, 1);
-//         layout->addWidget(pages, 3);
-
-//         QThread *serverThread = new QThread(this);
-//         LPTF_Server *server = new LPTF_Server("127.0.0.1", 12345);
-//         server->moveToThread(serverThread);
-
-//         connect(serverThread, &QThread::started, [=]()
-//                 { server->run(); });
-
-//         connect(server, &LPTF_Server::clientCountChanged,
-//                 dashboard, &DashboardWidget::updateClientCount);
-
-//         connect(dashboard, &DashboardWidget::requestSystemInfo, [=]()
-//                 {
-//     pages->setCurrentWidget(infoWidget);
-//     server->sendSystemInfoRequest(); });
-
-//         connect(server, &LPTF_Server::systemInfoReceived,
-//                 infoWidget, &InfoSystemWidget::displaySystemInfo);
-
-//         connect(dashboard, &DashboardWidget::requestProcessList, [=]()
-//                 {
-//     pages->setCurrentWidget(processManagerWidget);
-//     server->sendProcessListRequest(); });
-
-//         connect(server, &LPTF_Server::processListReceived,
-//                 processManagerWidget, &ProcessManagerWidget::displayProcesses);
-
-//         serverThread->start();
-// }
+void MainWindow::handleClientDisconnected(const QString &socketId)
+{
+    qDebug() << "[MAINWINDOW] Client disconnected:" << socketId;
+    infoWidget->removeClient(socketId);
+}

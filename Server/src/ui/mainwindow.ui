@@ -51,10 +51,10 @@ border: 1px solid  #B1141F;
 </string>
     </property>
     <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
+     <enum>QFrame::Shape::StyledPanel</enum>
     </property>
     <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
+     <enum>QFrame::Shadow::Raised</enum>
     </property>
     <widget class="QTextEdit" name="quote_latin">
      <property name="geometry">
@@ -171,7 +171,7 @@ text-align: left;
 </string>
       </property>
       <property name="text">
-       <string>TextLabel</string>
+       <string>Display clients system info </string>
       </property>
      </widget>
      <widget class="QLabel" name="title_1">
@@ -197,7 +197,7 @@ border: none;
 text-align: left;</string>
       </property>
       <property name="text">
-       <string>TextLabel</string>
+       <string>System Info</string>
       </property>
      </widget>
      <zorder>arrow_1</zorder>
@@ -218,7 +218,7 @@ text-align: left;</string>
       <string notr="true">border: 1px solid  #B1141F;</string>
      </property>
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
     </widget>
     <widget class="Line" name="line_top">
@@ -234,7 +234,7 @@ text-align: left;</string>
       <string notr="true">border: 1px solid  #B1141F;</string>
      </property>
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
     </widget>
     <widget class="QLabel" name="logo_group">
@@ -1496,7 +1496,7 @@ text-align: left;</string>
       </property>
      </widget>
     </widget>
-    <widget class="QPushButton" name="user_text_number">
+    <widget class="QLabel" name="user_text_number">
      <property name="geometry">
       <rect>
        <x>60</x>
@@ -1507,8 +1507,6 @@ text-align: left;</string>
      </property>
      <property name="font">
       <font>
-       <family>Calibri</family>
-       <pointsize>10</pointsize>
        <bold>true</bold>
       </font>
      </property>
@@ -1520,7 +1518,7 @@ border: none;
 text-align: left;</string>
      </property>
      <property name="text">
-      <string>16</string>
+      <string>0</string>
      </property>
     </widget>
    </widget>
@@ -1539,7 +1537,7 @@ border-radius: 10px;
 border: 1px solid  #B1141F;
 </string>
     </property>
-    <widget class="QPushButton" name="display_info_box">
+    <widget class="QWidget" name="display_info_box" native="true">
      <property name="geometry">
       <rect>
        <x>30</x>
@@ -1553,64 +1551,59 @@ border: 1px solid  #B1141F;
 border-radius: 10px;
 background-color: #3D0E0E;</string>
      </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="display_details">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>110</y>
-       <width>491</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Calibri</family>
-       <pointsize>10</pointsize>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border-radius: 0px;
+     <widget class="QLabel" name="display_details">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>20</y>
+        <width>491</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-radius: 0px;
 color: #B26565;
 background-color: none;
 border: none;
 text-align: left;</string>
-     </property>
-     <property name="text">
-      <string>Sub title Sub titleSub titleSub titleSub titleSub titleSub titleSub titleSub title</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="display_info">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>90</y>
-       <width>281</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Calibri</family>
-       <pointsize>-1</pointsize>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border-radius: 0px;
+      </property>
+      <property name="text">
+       <string>Sub title Sub titleSub titleSub titleSub titleSub titleSub titleSub titleSub title</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="display_info_title">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>20</y>
+        <width>260</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Calibri</family>
+        <pointsize>-1</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-radius: 0px;
 color: #faa4a4;
 background-color: none;
 border: none;
 text-align: left;
 font-size: 20px;</string>
-     </property>
-     <property name="text">
-      <string>Titre de ce qu'il faut afficher</string>
-     </property>
+      </property>
+      <property name="text">
+       <string>Title</string>
+      </property>
+     </widget>
     </widget>
    </widget>
    <widget class="QFrame" name="DISPLAY_TOP">
@@ -1629,61 +1622,6 @@ border: 1px solid  #B1141F;
 
 </string>
     </property>
-    <widget class="QPushButton" name="top_title">
-     <property name="geometry">
-      <rect>
-       <x>120</x>
-       <y>20</y>
-       <width>311</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Calibri</family>
-       <pointsize>-1</pointsize>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border-radius: 0px;
-color:  #B1141F;
-background-color: none;
-border: none;
-text-align: left;
-font-size: 20px;</string>
-     </property>
-     <property name="text">
-      <string>Nom de l'exercice</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="top_subtitle">
-     <property name="geometry">
-      <rect>
-       <x>120</x>
-       <y>40</y>
-       <width>491</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Calibri</family>
-       <pointsize>10</pointsize>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border-radius: 0px;
-color: #B26565;
-background-color: none;
-border: none;
-text-align: left;</string>
-     </property>
-     <property name="text">
-      <string>Sub title Sub titleSub titleSub titleSub titleSub titleSub titleSub titleSub title</string>
-     </property>
-    </widget>
     <widget class="QPushButton" name="skill_btn_1">
      <property name="geometry">
       <rect>
@@ -1819,7 +1757,62 @@ text-align: left;</string>
       <string>Socket</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="top_rect">
+    <widget class="QLabel" name="top_subtitle">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>40</y>
+       <width>491</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Calibri</family>
+       <pointsize>10</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-radius: 0px;
+color: #B26565;
+background-color: none;
+border: none;
+text-align: left;</string>
+     </property>
+     <property name="text">
+      <string>Sub title Sub titleSub titleSub titleSub titleSub titleSub titleSub titleSub title</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="top_title">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>20</y>
+       <width>311</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Calibri</family>
+       <pointsize>-1</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-radius: 0px;
+color:  #B1141F;
+background-color: none;
+border: none;
+text-align: left;
+font-size: 20px;</string>
+     </property>
+     <property name="text">
+      <string>Exercice name</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="top_rect">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -1837,15 +1830,6 @@ background-color: #3D0E0E;</string>
       <string/>
      </property>
     </widget>
-    <zorder>top_title</zorder>
-    <zorder>top_subtitle</zorder>
-    <zorder>skill_btn_1</zorder>
-    <zorder>skill_text_1</zorder>
-    <zorder>skill_btn_2</zorder>
-    <zorder>skill_text_2</zorder>
-    <zorder>skill_btn_3</zorder>
-    <zorder>top_rect</zorder>
-    <zorder>skill_text_3</zorder>
    </widget>
   </widget>
  </widget>

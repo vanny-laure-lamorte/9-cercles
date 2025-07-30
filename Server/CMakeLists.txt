@@ -10,7 +10,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
 # === HEADERS & SOURCES ===
-file(GLOB HEADER_FILES 
+file(GLOB HEADER_FILES
 "include/*.h"
 )
 set(SOCKET_SOURCES
@@ -43,11 +43,9 @@ set_target_properties(server PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_
 
 add_executable(server_gui
     src/server_gui.cpp
-    src/ui/DashboardWidget.cpp
     src/ui/InfoSystemWidget.cpp
     src/ui/ProcessManagerWidget.cpp
     src/ui/MainWindow.cpp
-    include/ui/DashboardWidget.h
     include/ui/InfoSystemWidget.h
     include/ui/ProcessManagerWidget.h
     include/ui/MainWindow.h
