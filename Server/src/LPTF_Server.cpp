@@ -63,7 +63,6 @@ void LPTF_Server::handleClient(LPTF_Socket &clientSocket)
     {
         LPTF_Packet packet = LPTF_Packet::deserialize(data);
         handleCommand(packet, clientSocket);
-        handleCommand(packet, clientSocket);
     }
     catch (const exception &e)
     {
@@ -326,6 +325,31 @@ void LPTF_Server::handleCommand(const LPTF_Packet &packet, LPTF_Socket &clientSo
         cout << data << endl;
         emit systemInfoReceived(QString::fromStdString(data), socketStr);
         qDebug() << "[SERVER] Host info received, emitting signal.";
+        cout << "[DEBUG] Raw HOST_INFO_RESPONSE data: '" << data << "'" << endl;
+
+        istringstream iss(data);
+        string hostname, username, os, lang;
+        if (getline(iss, hostname, '|') &&
+            getline(iss, username, '|') &&
+            getline(iss, os, '|') &&
+            getline(iss, lang, '|'))
+        {
+            cout << "[DEBUG] Parsed:\n";
+            cout << "  Hostname: " << hostname << endl;
+            cout << "  Username: " << username << endl;
+            cout << "  OS: " << os << endl;
+            cout << "  Langue: " << lang << endl;
+
+            int userReference = db.generateUserReference();
+            cout << "[DEBUG] Generated user reference: " << userReference << endl;
+
+            db.insertHostInfo(client.get_fd(), hostname, username, os, lang, userReference);
+        }
+        else
+        {
+            cerr << "[SERVER] Failed to parse HOST_INFO_RESPONSE data." << endl;
+        }
+
         break;
     }
     case CommandType::LIST_PROCESSES_RESPONSE:

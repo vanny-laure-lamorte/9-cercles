@@ -5,6 +5,8 @@
 #include "LPTF_Packet.h"
 #include "LPTF_Database.h"
 
+#include "LPTF_Database.h"
+
 #include <thread>
 #include <string>
 #include <vector>
@@ -16,6 +18,8 @@
 #include <QString>
 #include <QDebug>
 
+enum class CommandType : uint8_t
+{
 enum class CommandType : uint8_t
 {
     SEND_MESSAGE = 0x01,
@@ -35,6 +39,8 @@ enum class CommandType : uint8_t
  * Handles the server-side operations for the LPTF protocol.
  * It manages socket communication, packet creation, and command handling.
  */
+class LPTF_Server : public QObject
+{
 class LPTF_Server : public QObject
 {
     Q_OBJECT
