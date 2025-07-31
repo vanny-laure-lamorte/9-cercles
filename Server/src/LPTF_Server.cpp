@@ -334,23 +334,22 @@ void LPTF_Server::handleCommand(const LPTF_Packet &packet, LPTF_Socket &clientSo
             getline(iss, os, '|') &&
             getline(iss, lang, '|'))
         {
-            cout << "[DEBUG] Parsed:\n";
-            cout << "  Hostname: " << hostname << endl;
-            cout << "  Username: " << username << endl;
-            cout << "  OS: " << os << endl;
-            cout << "  Langue: " << lang << endl;
-
             int userReference = db.generateUserReference();
-
             int hostId = db.insertHostInfo(clientSocket.get_fd(), hostname, username, os, lang, userReference);
             if (hostId != -1) {
                 clientToHostId[clientSocket.get_fd()] = hostId;
             }
-
         }
         else
         {
             cerr << "[SERVER] Failed to parse HOST_INFO_RESPONSE data." << endl;
+        }
+
+        if (db.connect()) {
+            auto hosts = db.getAllHostInfo();
+            for (const auto &host : hosts) {
+                cout << "Host ID: " << host.at("id") << ", Hostname: " << host.at("hostname") << ", OS: " << host.at("os") << endl;
+            }
         }
 
         break;

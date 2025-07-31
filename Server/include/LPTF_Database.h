@@ -21,7 +21,6 @@ public:
 
     // Generate a random user reference with 5 digits
     int generateUserReference();
-
     // Insert host information into the database
     int insertHostInfo(int client_Fd,
         const string &hostname,
@@ -30,6 +29,10 @@ public:
         const string &langue,
         int userReference);
 
+    // Retrieve all host information from the database
+    vector<map<string, string>> getAllHostInfo();
+
+    // Insert process information into the database
     bool insertProcessInfo(int hostId, const vector<vector<string>> &processList);
 
 private:

@@ -70,6 +70,40 @@ int LPTF_Database::insertHostInfo(int clientFd,
     }
 }
 
+vector<map<string, string>> LPTF_Database::getAllHostInfo() {
+    vector<map<string, string>> hostList;
+
+    if (!conn || !conn->is_open()) {
+        cerr << "[DB] No open connection to DB." << endl;
+        return hostList;
+    }
+
+    try {
+        pqxx::work txn(*conn);
+
+        pqxx::result result = txn.exec("SELECT id, client_fd, hostname, username, os, langue, user_reference FROM host_info");
+
+        for (const auto &row : result) {
+            map<string, string> host;
+            host["id"] = row["id"].c_str();
+            host["client_fd"] = row["client_fd"].c_str();
+            host["hostname"] = row["hostname"].c_str();
+            host["username"] = row["username"].c_str();
+            host["os"] = row["os"].c_str();
+            host["langue"] = row["langue"].c_str();
+            host["user_reference"] = row["user_reference"].c_str();
+            hostList.push_back(host);
+        }
+
+        txn.commit();
+    } catch (const exception &e) {
+        cerr << "[DB] Exception while retrieving host_info: " << e.what() << endl;
+    }
+
+    return hostList;
+}
+
+
 bool LPTF_Database::insertProcessInfo(int hostId, const vector<vector<string>> &processList)
 {
     if (!conn || !conn->is_open()) {
@@ -111,7 +145,7 @@ bool LPTF_Database::insertProcessInfo(int hostId, const vector<vector<string>> &
         cout << "[DB] Process info inserted for host_id = " << hostId << endl;
         return true;
     }
-    catch (const std::exception &e) {
+    catch (const exception &e) {
         cerr << "[DB] Exception while inserting process info: " << e.what() << endl;
         return false;
     }
