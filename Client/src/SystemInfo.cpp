@@ -18,13 +18,13 @@ using namespace std;
 
 string SystemInfo::getAllInfo()
 {
-        string hostname = SystemInfo::getHostName();
-        string username = SystemInfo::getUserName();
-        string os = SystemInfo::getOSInfo();
-        string osLanguage = SystemInfo::getOSLanguage();
-        string allInfo = ">> Hostname: " + hostname + "\n" + ">> Username: " + username + "\n" + ">> OS: " + os + "\n" + ">> OS Language: " + osLanguage + "\n";
+    string hostname = SystemInfo::getHostName();
+    string username = SystemInfo::getUserName();
+    string os = SystemInfo::getOSInfo();
+    string language = SystemInfo::getOSLanguage();
+    string allInfo =  hostname + "|" + username + "|" + os + "|" + language;
 
-        return allInfo;
+    return allInfo;
 }
 
 string SystemInfo::getHostName()

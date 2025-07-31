@@ -70,7 +70,13 @@
     "stdfloat": "cpp",
     "stop_token": "cpp",
     "thread": "cpp",
-    "qvboxlayout": "cpp"
+    "qvboxlayout": "cpp",
+    "fstream": "cpp",
+    "bitset": "cpp",
+    "complex": "cpp",
+    "source_location": "cpp",
+    "shared_mutex": "cpp",
+    "typeindex": "cpp"
   },
   "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
 }
