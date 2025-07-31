@@ -9,26 +9,35 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     server = new LPTF_Server("127.0.0.1", 12345);
+
+    // Sytem info
     infoWidget = new InfoSystemWidget(this, ui->display_info_box, ui->top_title, ui->top_subtitle, ui->top_rect);
+
+    // Process
+    processManagerWidget = new ProcessManagerWidget(this, ui->display_info_box, ui->top_title, ui->top_subtitle, ui->top_rect);
 
     clientLabel = ui->user_text_number;
     systemInfoButton = ui->btn_1;
     displayProcessesButton = ui->btn_2;
 
-    connect(this, &MainWindow::requestSystemInfo,
-            server, &LPTF_Server::sendSystemInfoRequest);
-
-    connect(this, &MainWindow::requestProcessList,
-            server, &LPTF_Server::sendProcessListRequest);
-
+    // Common
     connect(server, &LPTF_Server::clientCountChanged,
             this, &MainWindow::updateClientCount);
 
+    // // System Info
+    // connect(this, &MainWindow::requestSystemInfo,
+    //         server, &LPTF_Server::sendSystemInfoRequest);
+
+    connect(systemInfoButton, &QPushButton::clicked, this, [this]()
+            {
+    processManagerWidget->setActive(false);
+    infoWidget->setActive(true); });
+
+    connect(infoWidget, &InfoSystemWidget::infoSystemForClientSelected,
+            server, &LPTF_Server::sendSystemInfoRequestFor);
+
     connect(server, &LPTF_Server::systemInfoReceived,
             infoWidget, &InfoSystemWidget::displaySystemInfo);
-
-    connect(infoWidget, &InfoSystemWidget::clientSelected,
-            server, &LPTF_Server::sendSystemInfoRequestFor);
 
     connect(server, &LPTF_Server::clientConnected,
             infoWidget, &InfoSystemWidget::addClient);
@@ -36,17 +45,26 @@ MainWindow::MainWindow(QWidget *parent)
     connect(server, &LPTF_Server::clientDisconnected,
             infoWidget, &InfoSystemWidget::removeClient);
 
-    connect(systemInfoButton, &QPushButton::clicked, this, [this] {
-        qDebug() << "System Info activated!";
-        infoWidget->setActive(true);
-    });
+    // Processes List
+    connect(displayProcessesButton, &QPushButton::clicked, this, [this]()
+            {
+    infoWidget->setActive(false);
+    processManagerWidget->setActive(true); });
 
-    connect(displayProcessesButton, &QPushButton::clicked, this, [this] {
-        qDebug() << "Button processList clicked!";
-        emit requestProcessList();
-    });
+    connect(server, &LPTF_Server::clientConnected,
+            processManagerWidget, &ProcessManagerWidget::addClient);
 
-    serverThread = QThread::create([this] { server->run(); });
+    connect(server, &LPTF_Server::clientDisconnected,
+            processManagerWidget, &ProcessManagerWidget::removeClient);
+
+    connect(processManagerWidget, &ProcessManagerWidget::processesForClientSelected,
+            server, &LPTF_Server::sendProcessListRequestFor);
+
+    connect(server, &LPTF_Server::processListReceived,
+            processManagerWidget, &ProcessManagerWidget::displayProcesses);
+
+    serverThread = QThread::create([this]
+                                   { server->run(); });
     serverThread->start();
 }
 

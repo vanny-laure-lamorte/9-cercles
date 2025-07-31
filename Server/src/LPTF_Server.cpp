@@ -306,13 +306,13 @@ void LPTF_Server::handleCommand(const LPTF_Packet &packet, LPTF_Socket &clientSo
 {
     std::string data(packet.getPayload().begin(), packet.getPayload().end());
     CommandType type = static_cast<CommandType>(packet.getType());
+    QString socketStr = QString::number(clientSocket.get_fd());
 
     switch (type)
     {
     case CommandType::HOST_INFO_RESPONSE:
     {
         cout << data << endl;
-        QString socketStr = QString::number(clientSocket.get_fd());
         emit systemInfoReceived(QString::fromStdString(data), socketStr);
         qDebug() << "[SERVER] Host info received, emitting signal.";
         break;
@@ -330,7 +330,8 @@ void LPTF_Server::handleCommand(const LPTF_Packet &packet, LPTF_Socket &clientSo
                  << " | Priority: " << setw(3) << process[4]
                  << " | Runtime: " << process[5] << endl;
         }
-        emit processListReceived(processes);
+        // QString socketStr = QString::number(clientSocket->get_fd());
+        emit processListReceived(processes, QString(socketStr));
         break;
     }
 
@@ -405,24 +406,32 @@ void LPTF_Server::sendSystemInfoRequest()
     }
 }
 
-void LPTF_Server::sendProcessListRequest()
+void LPTF_Server::sendProcessListRequestFor(const QString &socketId)
 {
+    for (auto *client : clientSockets)
+    {
+        if (QString::number(client->get_fd()) == socketId)
+        {
+            sendPacketToClient(*client, "> Requesting process list",
+                               CommandType::LIST_PROCESSES_REQUEST);
+            qDebug() << "[SERVER] Sent processes list request to client:" << socketId;
+            return;
+        }
+    }
+    qWarning() << "[SERVER] No client found for socketId:" << socketId;
     if (clientSockets.empty())
     {
         qDebug() << "[SERVER] No client connected.";
         return;
     }
-
-    for (auto *client : clientSockets)
-    {
-        sendPacketToClient(*client, "> Requesting process list",
-                           CommandType::LIST_PROCESSES_REQUEST);
-    }
 }
 
-void LPTF_Server::sendSystemInfoRequestFor(const QString &socketId) {
-    for (auto *client : clientSockets) {
-        if (QString::number(client->get_fd()) == socketId) {
+void LPTF_Server::sendSystemInfoRequestFor(const QString &socketId)
+{
+    for (auto *client : clientSockets)
+    {
+        if (QString::number(client->get_fd()) == socketId)
+        {
             sendPacketToClient(*client, "> Requesting host info",
                                CommandType::HOST_INFO_REQUEST);
             qDebug() << "[SERVER] Sent system info request to client:" << socketId;

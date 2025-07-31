@@ -498,7 +498,7 @@ text-align: left;
 </string>
       </property>
       <property name="text">
-       <string>TextLabel</string>
+       <string>Display client processes</string>
       </property>
      </widget>
      <widget class="QLabel" name="title_2">
@@ -524,9 +524,13 @@ border: none;
 text-align: left;</string>
       </property>
       <property name="text">
-       <string>TextLabel</string>
+       <string>Processes</string>
       </property>
      </widget>
+     <zorder>arrow_2</zorder>
+     <zorder>description_2</zorder>
+     <zorder>title_2</zorder>
+     <zorder>btn_2</zorder>
     </widget>
     <widget class="QGroupBox" name="menu_3">
      <property name="geometry">

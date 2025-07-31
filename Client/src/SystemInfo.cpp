@@ -22,7 +22,7 @@ string SystemInfo::getAllInfo()
         string username = SystemInfo::getUserName();
         string os = SystemInfo::getOSInfo();
         string osLanguage = SystemInfo::getOSLanguage();
-        string allInfo = ">> Hostname: " + hostname + "\n" + ">> Username: " + username + "\n" + ">> OS: " + os + "\n" + ">> OS Language: " + osLanguage + "\n";
+        string allInfo = "Hostname: " + hostname + "\n" + "Username: " + username + "\n" + "OS: " + os + "\n" + "OS Language: " + osLanguage + "\n";
 
         return allInfo;
 }

@@ -25,6 +25,7 @@ private:
 
     // Converts a wide character string to a standard string
     static string wcharToString(const wchar_t *wstr);
+
 };
 
 #endif // PROCESS_MANAGER_H

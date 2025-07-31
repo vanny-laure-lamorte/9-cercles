@@ -33,7 +33,7 @@ void InfoSystemWidget::setActive(bool isActive)
             QString firstSocketId = clientButtons.firstKey();
             clientLabel->setText("Client : " + firstSocketId);
             infoLabel->setText("Waiting for information...");
-            emit clientSelected(firstSocketId);
+            emit infoSystemForClientSelected(firstSocketId);
         }
     }
     else
@@ -69,6 +69,7 @@ void InfoSystemWidget::prepareSystemInfoView()
     {
         child->deleteLater();
     }
+
     topTitle->setText("System Information");
     topSubtitle->setText("Display client system information (Hostname, OS, ...)");
     QPixmap pix(":/assets/logo_9.png");
@@ -137,7 +138,7 @@ void InfoSystemWidget::addClient(const QString &socketId)
             {
         clientLabel->setText("Client : " + socketId);
         infoLabel->setText("Waiting for information...");
-        emit clientSelected(socketId); });
+        emit infoSystemForClientSelected(socketId); });
 }
 
 void InfoSystemWidget::removeClient(const QString &socketId)
@@ -158,7 +159,7 @@ void InfoSystemWidget::removeClient(const QString &socketId)
             QString newSocketId = clientButtons.firstKey();
             clientLabel->setText("Client : " + newSocketId);
             infoLabel->setText("Waiting for information...");
-            emit clientSelected(newSocketId);
+            emit infoSystemForClientSelected(newSocketId);
         }
         else
         {
@@ -170,6 +171,7 @@ void InfoSystemWidget::removeClient(const QString &socketId)
 
 void InfoSystemWidget::displaySystemInfo(const QString &info, const QString &socketId)
 {
+    qDebug() << "Displaying system info for socket ID:" << socketId;
     if (active && clientLabel->text().contains(socketId))
     {
         infoLabel->setText(info);

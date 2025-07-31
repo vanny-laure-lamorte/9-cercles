@@ -29,7 +29,7 @@ public slots:
 
 signals:
     // Signal emitted when a client is selected
-    void clientSelected(const QString &socketId);
+    void infoSystemForClientSelected(const QString &socketId);
 
 private:
     // Prepares the system info view by clearing the display info box and setting up the layout
