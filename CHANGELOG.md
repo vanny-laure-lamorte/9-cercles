@@ -58,3 +58,15 @@ Refonte du serveur avec une interface Qt affichant les clients connectés, leurs
 - Montrer la réception et l'affichage des réponses des clients dans la GUI.
 - Indiquer l’adresse IP de chaque client.
 - Déconnecter manuelle des clients depuis l’interface.
+
+## [v5.0] - 2025-07-31
+### Cercle 5 : Colère – Surveiller sans réagir à chaud
+
+Mise en place d’un système de sauvegarde des données reçues dans une base de données PostgreSQL pour leur conservation et leur consultation ultérieure.
+
+- `LPTF_Database`: Gère la connexion à PostgreSQL
+  - Centralise la construction et l’exécution des requêtes SQL.
+  - Enregistre dans la base de données les informations système et les processus actifs reçus des clients.
+
+- Affichage dans la GUI :
+  - Données système et liste des processus
