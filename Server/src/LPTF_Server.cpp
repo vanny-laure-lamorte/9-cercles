@@ -336,10 +336,16 @@ void LPTF_Server::handleCommand(const LPTF_Packet &packet, LPTF_Socket &clientSo
     }
 
     case CommandType::COMMAND_RESULT_RESPONSE:
+    {
         cout << data << endl;
 
         break;
-
+    }
+    case CommandType::SEND_MESSAGE:
+    {
+        cout << "[SERVER] Message from client " << socketStr.toStdString() << ": " << data << endl;
+        break;
+    }
     default:
         qWarning() << "[SERVER] Unknown command type received:"
                    << static_cast<int>(packet.getType());
