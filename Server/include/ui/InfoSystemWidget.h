@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseClientWidget.h"
+#include <QWidget>
 
 class InfoSystemWidget : public BaseClientWidget
 {

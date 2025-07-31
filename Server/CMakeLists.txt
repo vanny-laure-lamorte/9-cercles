@@ -71,10 +71,12 @@ set_target_properties(server PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_
 add_executable(server_gui
     src/server_gui.cpp
     src/ui/BaseClientWidget.cpp
+    src/ui/DatabaseWidget.cpp
     src/ui/InfoSystemWidget.cpp
     src/ui/ProcessManagerWidget.cpp
     src/ui/MainWindow.cpp
     include/ui/BaseClientWidget.h
+    include/ui/DatabaseWidget.h
     include/ui/InfoSystemWidget.h
     include/ui/ProcessManagerWidget.h
     include/ui/MainWindow.h

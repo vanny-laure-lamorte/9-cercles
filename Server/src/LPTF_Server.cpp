@@ -3,7 +3,8 @@
 LPTF_Server::LPTF_Server(const string &ip, int port, QObject *parent)
     : QObject(parent), clientSocket(INVALID_SOCKET)
 {
-    if (!db.connect()) {
+    if (!db.connect())
+    {
         throw runtime_error("Failed to connect to DB");
     }
 
@@ -209,13 +210,13 @@ void LPTF_Server::handleAdminInput()
     {
         int input;
         cout << "\n===== MENU =====\n"
-                  << "1. list - List connected clients\n"
-                  << "2. send - Send a message to a client\n"
-                  << "3. Return system information\n"
-                  << "4. List running processes\n"
-                  << "5. Execute a system command\n"
-                  << "8. quit - Quit the server\n\n"
-                  << ">> Choose an option: ";
+             << "1. list - List connected clients\n"
+             << "2. send - Send a message to a client\n"
+             << "3. Return system information\n"
+             << "4. List running processes\n"
+             << "5. Execute a system command\n"
+             << "8. quit - Quit the server\n\n"
+             << ">> Choose an option: ";
         cin >> input;
         if (cin.fail())
         {
@@ -336,7 +337,8 @@ void LPTF_Server::handleCommand(const LPTF_Packet &packet, LPTF_Socket &clientSo
         {
             int userReference = db.generateUserReference();
             int hostId = db.insertHostInfo(clientSocket.get_fd(), hostname, username, os, lang, userReference);
-            if (hostId != -1) {
+            if (hostId != -1)
+            {
                 clientToHostId[clientSocket.get_fd()] = hostId;
             }
         }
@@ -344,16 +346,9 @@ void LPTF_Server::handleCommand(const LPTF_Packet &packet, LPTF_Socket &clientSo
         {
             cerr << "[SERVER] Failed to parse HOST_INFO_RESPONSE data." << endl;
         }
-
-        if (db.connect()) {
-            auto hosts = db.getAllHostInfo();
-            for (const auto &host : hosts) {
-                cout << "Host ID: " << host.at("id") << ", Hostname: " << host.at("hostname") << ", OS: " << host.at("os") << endl;
-            }
-        }
-
         break;
     }
+
     case CommandType::LIST_PROCESSES_RESPONSE:
     {
         auto processes = deserializeStringTable(packet.getPayload());
@@ -370,10 +365,13 @@ void LPTF_Server::handleCommand(const LPTF_Packet &packet, LPTF_Socket &clientSo
         // QString socketStr = QString::number(clientSocket->get_fd());
         emit processListReceived(processes, QString(socketStr));
         auto it = clientToHostId.find(clientSocket.get_fd());
-        if (it != clientToHostId.end()) {
+        if (it != clientToHostId.end())
+        {
             int hostId = it->second;
             db.insertProcessInfo(hostId, processes);
-        } else {
+        }
+        else
+        {
             cerr << "[SERVER] No host_id found for clientFd: " << clientSocket.get_fd() << endl;
         }
 
@@ -430,7 +428,7 @@ LPTF_Server::deserializeStringTable(const vector<uint8_t> &payload)
                 throw runtime_error("Invalid payload");
 
             string cell(payload.begin() + offset,
-                             payload.begin() + offset + strLen);
+                        payload.begin() + offset + strLen);
             offset += strLen;
 
             row.push_back(cell);
@@ -490,4 +488,25 @@ void LPTF_Server::sendSystemInfoRequestFor(const QString &socketId)
         }
     }
     qWarning() << "[SERVER] No client found for socketId:" << socketId;
+}
+
+void LPTF_Server::sendAllHostInfoRequest()
+{
+    if (db.connect())
+    {
+        std::vector<std::map<std::string, std::string>> stdHosts = db.getAllHostInfo();
+        QVector<QMap<QString, QString>> qtHosts;
+
+        for (const std::map<std::string, std::string> &stdHost : stdHosts)
+        {
+            QMap<QString, QString> qtHost;
+            for (const auto &[key, value] : stdHost)
+            {
+                qtHost[QString::fromStdString(key)] = QString::fromStdString(value);
+            }
+            qtHosts.append(qtHost);
+        }
+        cout << "emitting db info";
+        emit allHostIsfoReceived(qtHosts);
+    }
 }

@@ -7,7 +7,7 @@ void ProcessManagerWidget::setActive(bool isActive)
 {
     if (active == isActive && isActive)
     {
-        qDebug() << "[InfoSystemWidget] Already active, skipping reload";
+        qDebug() << "[ProcessManagerWidget] Already active, skipping reload";
         return;
     }
     BaseClientWidget::setActive(isActive);

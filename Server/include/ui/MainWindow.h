@@ -2,6 +2,8 @@
 #include "LPTF_Server.h"
 #include "InfoSystemWidget.h"
 #include "ProcessManagerWidget.h"
+#include "DatabaseWidget.h"
+
 #include <QMainWindow>
 #include <QThread>
 #include <QLabel>
@@ -30,21 +32,27 @@ private:
     LPTF_Server *server;
     InfoSystemWidget *infoWidget;
     ProcessManagerWidget *processManagerWidget;
+    DatabaseWidget *databaseWidget;
 
     QThread *serverThread;
     QLabel *clientLabel;
     QPushButton *systemInfoButton;
     QPushButton *displayProcessesButton;
 
+    // Database related UI elements
+    QPushButton *displayAllHostInfoBtn;
+
 signals:
     // Signal to request system information from the server
     void requestSystemInfo();
     // Signal to request the list of processes from the server
     void requestProcessList();
+    // Signal to request all host information from the server
+    void requestAllHostInfo();
 
 public slots:
     // Slot to update the client count displayed in the UI
     void updateClientCount(int count);
     // Slot to handle the reception of system information
-    void handleClientDisconnected(const QString &socketId);
+        void handleClientDisconnected(const QString &socketId);
 };

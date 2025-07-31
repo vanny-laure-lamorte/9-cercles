@@ -869,7 +869,7 @@ text-align: left;
 </string>
       </property>
       <property name="text">
-       <string>Option description</string>
+       <string>Denial of the soul’s immortality or Church doctrine</string>
       </property>
      </widget>
      <widget class="QLabel" name="title_5">
@@ -895,7 +895,7 @@ border: none;
 text-align: left;</string>
       </property>
       <property name="text">
-       <string>TextLabel</string>
+       <string>Heresy </string>
       </property>
      </widget>
     </widget>
@@ -990,7 +990,7 @@ text-align: left;
 </string>
       </property>
       <property name="text">
-       <string>Option description</string>
+       <string>The wrathful and the sullen</string>
       </property>
      </widget>
      <widget class="QLabel" name="title_6">
@@ -1016,7 +1016,7 @@ border: none;
 text-align: left;</string>
       </property>
       <property name="text">
-       <string>TextLabel</string>
+       <string>Wrath</string>
       </property>
      </widget>
     </widget>
@@ -1111,7 +1111,7 @@ text-align: left;
 </string>
       </property>
       <property name="text">
-       <string>Option description</string>
+       <string>Avaricious and prodigal</string>
       </property>
      </widget>
      <widget class="QLabel" name="title_7">
@@ -1137,7 +1137,7 @@ border: none;
 text-align: left;</string>
       </property>
       <property name="text">
-       <string>TextLabel</string>
+       <string>Greed </string>
       </property>
      </widget>
     </widget>
@@ -1232,7 +1232,7 @@ text-align: left;
 </string>
       </property>
       <property name="text">
-       <string>Option description</string>
+       <string>Overindulgence in food, drink etc.</string>
       </property>
      </widget>
      <widget class="QLabel" name="title_8">
@@ -1258,7 +1258,7 @@ border: none;
 text-align: left;</string>
       </property>
       <property name="text">
-       <string>TextLabel</string>
+       <string>Gluttony </string>
       </property>
      </widget>
     </widget>
@@ -1353,7 +1353,7 @@ text-align: left;
 </string>
       </property>
       <property name="text">
-       <string>Option description</string>
+       <string>Carnal sinners</string>
       </property>
      </widget>
      <widget class="QLabel" name="title_9">
@@ -1379,7 +1379,7 @@ border: none;
 text-align: left;</string>
       </property>
       <property name="text">
-       <string>TextLabel</string>
+       <string>Lust </string>
       </property>
      </widget>
     </widget>
@@ -1474,7 +1474,7 @@ text-align: left;
 </string>
       </property>
       <property name="text">
-       <string>Option description</string>
+       <string>Virtuous pagans</string>
       </property>
      </widget>
      <widget class="QLabel" name="title_10">
@@ -1500,7 +1500,7 @@ border: none;
 text-align: left;</string>
       </property>
       <property name="text">
-       <string>TextLabel</string>
+       <string>Limbo </string>
       </property>
      </widget>
     </widget>

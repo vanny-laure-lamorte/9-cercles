@@ -57,6 +57,8 @@ public slots:
     void sendProcessListRequestFor(const QString &socketId);
     // Sends a system info request for a specific client identified by socket ID
     void sendSystemInfoRequestFor(const QString &socketId);
+    // Sends a request to get all host information from the database
+    void sendAllHostInfoRequest();
 
 signals:
     // Signals emitted for various events
@@ -71,8 +73,10 @@ signals:
     // Signal emitted when a client is connected
     void clientConnected(const QString &socketId);
 
-private:
+    // Signal emitted when all host information is received
+    void allHostIsfoReceived(const QVector<QMap<QString, QString>> &hosts);
 
+private:
     LPTF_Socket serverSocket;
     SOCKET clientSocket;
     std::vector<LPTF_Socket *> clientSockets;
@@ -89,6 +93,5 @@ private:
     void handleCommand(const LPTF_Packet &packet, LPTF_Socket &clientSocket);
     // Deserializes a string table from the packet payload
     vector<vector<string>> deserializeStringTable(const vector<uint8_t> &payload);
-
 };
 #endif // LPTF_SERVER_H
