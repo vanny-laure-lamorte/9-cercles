@@ -6,13 +6,10 @@ USE circle;
 DROP DATABASE;
 
 -- Drop tables if they exist (to reset the DB)
-DROP TABLE IF EXISTS commands;
-
-DROP TABLE IF EXISTS processes;
-
-DROP TABLE IF EXISTS keystrokes;
-
 DROP TABLE IF EXISTS host_info;
+DROP TABLE IF EXISTS processes;
+DROP TABLE IF EXISTS commands;
+DROP TABLE IF EXISTS keystrokes;
 
 -- Create table for host machine information
 CREATE TABLE IF NOT EXISTS host_info (
