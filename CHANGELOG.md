@@ -48,13 +48,12 @@ Ajout de nouvelles fonctionnalités côté Client pour répondre aux demandes du
   - Ajout de nouveaux types de commandes (`LIST_PROCESSES_REQUEST`, `EXECUTE_COMMAND_REQUEST`, `HOST_INFO_REQUEST`, etc.).
   - Gestion des réponses structurées et affichage côté serveur.
 
-[v4.0] - 2025-07-29
-Cercle 4 : Avarice
+## [v4.0] - 2025-07-31
+### Cercle 4 : Avarice
 Refonte du serveur avec une interface Qt affichant les clients connectés, leurs IP, permettant d’envoyer des requêtes spécifiques et de gérer leurs connexions :
 
 - Développer une interface graphique avec Qt pour le serveur.
 - Afficher la liste des clients connectés en temps réel.
-- Permettre d’exécuter les requêtes du troisième cercle pour chaque client.
-- Montrer la réception et l'affichage des réponses des clients dans la GUI.
-- Indiquer l’adresse IP de chaque client.
-- Déconnecter manuelle des clients depuis l’interface.
+- `SystemInfoWidget` : Afficher le systeme inf (le nom du système, le nom de l'utilisateur, l'os, la langue)
+- `SystemCommandWidget` Afficher les processus
+- `MainWindow` :Montrer la réception et l'affichage des réponses des clients dans la GUI.
