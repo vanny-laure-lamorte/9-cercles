@@ -129,13 +129,20 @@
 
 void BaseClientWidget::setActive(bool isActive)
 {
+    if (active == isActive) {
+        qDebug() << "[BaseClientWidget] setActive called but already in state:" << isActive;
+        return;
+    }
+
     switching = true;
     active = isActive;
 
-    if (!active && displayInfoBox && displayInfoBox->layout()) {
+    if (!active && displayInfoBox && displayInfoBox->layout())
+    {
         qDebug() << "[BaseClientWidget] setActive(false) - cleaning buttons and layout";
 
-        for (auto btn : clientButtons) {
+        for (auto btn : clientButtons)
+        {
             if (btn) {
                 btn->setEnabled(false);
                 btn->disconnect(this);
@@ -179,5 +186,5 @@ void BaseClientWidget::onClientButtonClicked(const QString &socketId)
 }
 
 void BaseClientWidget::isSwitching(bool switching){
-    
+
 }

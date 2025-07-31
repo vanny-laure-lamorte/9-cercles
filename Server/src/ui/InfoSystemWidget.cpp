@@ -3,8 +3,14 @@
 
 void InfoSystemWidget::setActive(bool isActive)
 {
+    if (active == isActive && isActive)
+    {
+        qDebug() << "[InfoSystemWidget] Already active, skipping reload";
+        return;
+    }
     BaseClientWidget::setActive(isActive);
-    if (active) {
+    if (active)
+    {
         prepareView("System Information",
                     "Display client system information (Hostname, OS, ...)",
                     ":/assets/logo_9.png");
@@ -16,7 +22,8 @@ void InfoSystemWidget::setActive(bool isActive)
         for (const QString &socketId : connectedClients)
             addClient(socketId);
 
-        if (!clientButtons.isEmpty()) {
+        if (!clientButtons.isEmpty())
+        {
             QString firstSocketId = clientButtons.firstKey();
             clientLabel->setText("Client : " + firstSocketId);
             infoLabel->setText("Waiting for information...");
@@ -33,7 +40,8 @@ void InfoSystemWidget::onClientClicked(const QString &socketId)
 
 void InfoSystemWidget::displaySystemInfo(const QString &info, const QString &socketId)
 {
-    if (active && clientLabel && clientLabel->text().contains(socketId)) {
+    if (active && clientLabel && clientLabel->text().contains(socketId))
+    {
         infoLabel->setText(info);
     }
 }
