@@ -3,6 +3,8 @@
 
 #include "LPTF_Socket.h"
 #include "LPTF_Packet.h"
+#include "LPTF_Database.h"
+
 #include <thread>
 #include <string>
 #include <vector>
@@ -44,7 +46,6 @@ public:
 
     // Handles incoming client connections and processes commands
     void run();
-
 public slots:
     // Handles the reception of commands from clients
     void sendSystemInfoRequest();
@@ -83,5 +84,9 @@ private:
     void handleCommand(const LPTF_Packet &packet, LPTF_Socket &clientSocket);
     // Deserializes a string table from the packet payload
     std::vector<std::vector<std::string>> deserializeStringTable(const std::vector<uint8_t> &payload);
+    void handleCommand(const LPTF_Packet &packet, LPTF_Socket &client);
+    vector<vector<string>> deserializeStringTable(const vector<uint8_t> &payload);
+
+    LPTF_Database db;
 };
 #endif // LPTF_SERVER_H
