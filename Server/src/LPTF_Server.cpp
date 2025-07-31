@@ -343,7 +343,7 @@ void LPTF_Server::handleCommand(const LPTF_Packet &packet, LPTF_Socket &clientSo
             int userReference = db.generateUserReference();
             cout << "[DEBUG] Generated user reference: " << userReference << endl;
 
-            db.insertHostInfo(client.get_fd(), hostname, username, os, lang, userReference);
+            db.insertHostInfo(clientSocket.get_fd(), hostname, username, os, lang, userReference);
         }
         else
         {

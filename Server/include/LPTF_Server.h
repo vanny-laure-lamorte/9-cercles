@@ -5,21 +5,16 @@
 #include "LPTF_Packet.h"
 #include "LPTF_Database.h"
 
-#include "LPTF_Database.h"
-
 #include <thread>
 #include <string>
 #include <vector>
 #include <conio.h>
 #include <iostream>
 #include <iomanip>
-
 #include <QObject>
 #include <QString>
 #include <QDebug>
 
-enum class CommandType : uint8_t
-{
 enum class CommandType : uint8_t
 {
     SEND_MESSAGE = 0x01,
@@ -39,8 +34,6 @@ enum class CommandType : uint8_t
  * Handles the server-side operations for the LPTF protocol.
  * It manages socket communication, packet creation, and command handling.
  */
-class LPTF_Server : public QObject
-{
 class LPTF_Server : public QObject
 {
     Q_OBJECT
@@ -89,8 +82,6 @@ private:
     // Handles commands received from clients
     void handleCommand(const LPTF_Packet &packet, LPTF_Socket &clientSocket);
     // Deserializes a string table from the packet payload
-    std::vector<std::vector<std::string>> deserializeStringTable(const std::vector<uint8_t> &payload);
-    void handleCommand(const LPTF_Packet &packet, LPTF_Socket &client);
     vector<vector<string>> deserializeStringTable(const vector<uint8_t> &payload);
 
     LPTF_Database db;
