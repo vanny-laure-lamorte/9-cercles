@@ -45,6 +45,11 @@ public:
 
     // Handles incoming client connections and processes commands
     void run();
+
+    std::unordered_map<int, int> clientToHostId;
+
+    LPTF_Database db;
+
 public slots:
     // Handles the reception of commands from clients
     void sendSystemInfoRequest();
@@ -67,6 +72,7 @@ signals:
     void clientConnected(const QString &socketId);
 
 private:
+
     LPTF_Socket serverSocket;
     SOCKET clientSocket;
     std::vector<LPTF_Socket *> clientSockets;
@@ -84,6 +90,5 @@ private:
     // Deserializes a string table from the packet payload
     vector<vector<string>> deserializeStringTable(const vector<uint8_t> &payload);
 
-    LPTF_Database db;
 };
 #endif // LPTF_SERVER_H

@@ -341,9 +341,12 @@ void LPTF_Server::handleCommand(const LPTF_Packet &packet, LPTF_Socket &clientSo
             cout << "  Langue: " << lang << endl;
 
             int userReference = db.generateUserReference();
-            cout << "[DEBUG] Generated user reference: " << userReference << endl;
 
-            db.insertHostInfo(clientSocket.get_fd(), hostname, username, os, lang, userReference);
+            int hostId = db.insertHostInfo(clientSocket.get_fd(), hostname, username, os, lang, userReference);
+            if (hostId != -1) {
+                clientToHostId[clientSocket.get_fd()] = hostId;
+            }
+
         }
         else
         {
@@ -367,6 +370,14 @@ void LPTF_Server::handleCommand(const LPTF_Packet &packet, LPTF_Socket &clientSo
         }
         // QString socketStr = QString::number(clientSocket->get_fd());
         emit processListReceived(processes, QString(socketStr));
+        auto it = clientToHostId.find(clientSocket.get_fd());
+        if (it != clientToHostId.end()) {
+            int hostId = it->second;
+            db.insertProcessInfo(hostId, processes);
+        } else {
+            cerr << "[SERVER] No host_id found for clientFd: " << clientSocket.get_fd() << endl;
+        }
+
         break;
     }
 

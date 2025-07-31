@@ -23,12 +23,14 @@ public:
     int generateUserReference();
 
     // Insert host information into the database
-    bool insertHostInfo(int client_Fd,
+    int insertHostInfo(int client_Fd,
         const string &hostname,
         const string &username,
         const string &os,
         const string &langue,
         int userReference);
+
+    bool insertProcessInfo(int hostId, const vector<vector<string>> &processList);
 
 private:
 

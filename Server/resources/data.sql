@@ -1,10 +1,7 @@
 -- Active: 1746523900583@@127.0.0.1@5432@circle
 CREATE DATABASE circle;
 
-USE circle;
-
 DROP DATABASE;
-
 -- Drop tables if they exist (to reset the DB)
 DROP TABLE IF EXISTS host_info;
 DROP TABLE IF EXISTS processes;
@@ -24,23 +21,9 @@ CREATE TABLE IF NOT EXISTS host_info (
 
 );
 
-INSERT INTO
-    host_info (
-        hostname,
-        username,
-        os_name,
-        langue
-    )
-VALUES (
-        'joedoe-PC',
-        'Joe Doe',
-        'Windows',
-        'fr_FR'
-    );
-
 -- Create table for keystroke logging
 CREATE TABLE IF NOT EXISTS keystrokes (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id INTEGER PRIMARY KEY,
     host_id INTEGER NOT NULL,
     key TEXT NOT NULL,
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,

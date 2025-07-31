@@ -11,7 +11,7 @@ set(CMAKE_AUTORCC ON)
 
 # === HEADERS & SOURCES ===
 file(GLOB HEADER_FILES
-    "${CMAKE_SOURCE_DIR}/include/*.h"
+"include/*.h"
 )
 
 set(SOCKET_SOURCES
