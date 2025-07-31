@@ -17,7 +17,6 @@ public:
                      QLabel *topTitle,
                      QLabel *topSubtitle,
                      QLabel *topRect);
-
     virtual void setActive(bool isActive);
     void isSwitching(bool switching);
 

@@ -77,6 +77,7 @@ private:
     void handleConnection();
     // Sends a packet to a specific client
     void sendPacketToClient(LPTF_Socket &clientSocket, const std::string &data, CommandType type);
+    // Handle commands sent by the server to the client
     void handleAdminInput();
     // Handles commands received from clients
     void handleCommand(const LPTF_Packet &packet, LPTF_Socket &clientSocket);

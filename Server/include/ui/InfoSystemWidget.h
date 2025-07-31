@@ -6,6 +6,7 @@ class InfoSystemWidget : public BaseClientWidget
     Q_OBJECT
 
 public:
+
     using BaseClientWidget::BaseClientWidget;
     void setActive(bool isActive) override;
 
