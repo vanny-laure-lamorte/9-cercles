@@ -2,6 +2,7 @@
 #include "LPTF_Server.h"
 #include "InfoSystemWidget.h"
 #include "ProcessManagerWidget.h"
+#include "SystemCommandWidget.h"
 #include <QMainWindow>
 #include <QThread>
 #include <QLabel>
@@ -30,11 +31,13 @@ private:
     LPTF_Server *server;
     InfoSystemWidget *infoWidget;
     ProcessManagerWidget *processManagerWidget;
+    SystemCommandWidget *systemCommandWidget;
 
     QThread *serverThread;
     QLabel *clientLabel;
     QPushButton *systemInfoButton;
     QPushButton *displayProcessesButton;
+    QPushButton *commandSystemButton;
 
 signals:
     // Signal to request system information from the server

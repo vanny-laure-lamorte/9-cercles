@@ -52,6 +52,8 @@ public slots:
     void sendProcessListRequestFor(const QString &socketId);
     // Sends a system info request for a specific client identified by socket ID
     void sendSystemInfoRequestFor(const QString &socketId);
+    // Sends a system command to a specific client identified by socket ID
+    void sendSystemCommandFor(const QString command, const QString &socketId);
 
 signals:
     // Signals emitted for various events
@@ -59,8 +61,9 @@ signals:
     // Signal emitted when system information is received
     void systemInfoReceived(const QString &info, const QString &socketId);
     // Signal emitted when a process list is received
-    void processListReceived(const std::vector<std::vector<std::string>> &processes,
-                             const QString &socketId);
+    void processListReceived(const std::vector<std::vector<std::string>> &processes, const QString &socketId);
+    // Signal emitted when a command result is received
+    void commandResultReceived(const QString &result, const QString &socketId);
     // Signal emitted when a client is connected
     void clientDisconnected(const QString &socketId);
     // Signal emitted when a client is connected

@@ -76,7 +76,12 @@
     "complex": "cpp",
     "source_location": "cpp",
     "shared_mutex": "cpp",
-    "typeindex": "cpp"
+    "spanstream": "cpp",
+    "stacktrace": "cpp",
+    "syncstream": "cpp",
+    "typeindex": "cpp",
+    "valarray": "cpp",
+    "qheaderview": "cpp"
   },
   "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
 }

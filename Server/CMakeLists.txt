@@ -73,10 +73,12 @@ add_executable(server_gui
     src/ui/BaseClientWidget.cpp
     src/ui/InfoSystemWidget.cpp
     src/ui/ProcessManagerWidget.cpp
+    src/ui/SystemCommandWidget.cpp
     src/ui/MainWindow.cpp
     include/ui/BaseClientWidget.h
     include/ui/InfoSystemWidget.h
     include/ui/ProcessManagerWidget.h
+    include/ui/SystemCommandWidget.h
     include/ui/MainWindow.h
     src/ui/mainwindow.ui
     resources.qrc

@@ -3,7 +3,8 @@
 LPTF_Server::LPTF_Server(const string &ip, int port, QObject *parent)
     : QObject(parent), clientSocket(INVALID_SOCKET)
 {
-    if (!db.connect()) {
+    if (!db.connect())
+    {
         throw runtime_error("Failed to connect to DB");
     }
 
@@ -209,13 +210,13 @@ void LPTF_Server::handleAdminInput()
     {
         int input;
         cout << "\n===== MENU =====\n"
-                  << "1. list - List connected clients\n"
-                  << "2. send - Send a message to a client\n"
-                  << "3. Return system information\n"
-                  << "4. List running processes\n"
-                  << "5. Execute a system command\n"
-                  << "8. quit - Quit the server\n\n"
-                  << ">> Choose an option: ";
+             << "1. list - List connected clients\n"
+             << "2. send - Send a message to a client\n"
+             << "3. Return system information\n"
+             << "4. List running processes\n"
+             << "5. Execute a system command\n"
+             << "8. quit - Quit the server\n\n"
+             << ">> Choose an option: ";
         cin >> input;
         if (cin.fail())
         {
@@ -373,7 +374,7 @@ void LPTF_Server::handleCommand(const LPTF_Packet &packet, LPTF_Socket &clientSo
     case CommandType::COMMAND_RESULT_RESPONSE:
     {
         cout << data << endl;
-
+        emit commandResultReceived(QString::fromStdString(data), QString(socketStr));
         break;
     }
     case CommandType::SEND_MESSAGE:
@@ -420,7 +421,7 @@ LPTF_Server::deserializeStringTable(const vector<uint8_t> &payload)
                 throw runtime_error("Invalid payload");
 
             string cell(payload.begin() + offset,
-                             payload.begin() + offset + strLen);
+                        payload.begin() + offset + strLen);
             offset += strLen;
 
             row.push_back(cell);
@@ -476,6 +477,21 @@ void LPTF_Server::sendSystemInfoRequestFor(const QString &socketId)
             sendPacketToClient(*client, "> Requesting host info",
                                CommandType::HOST_INFO_REQUEST);
             qDebug() << "[SERVER] Sent system info request to client:" << socketId;
+            return;
+        }
+    }
+    qWarning() << "[SERVER] No client found for socketId:" << socketId;
+}
+
+void LPTF_Server::sendSystemCommandFor(const QString command, const QString &socketId)
+{
+    for (auto *client : clientSockets)
+    {
+        if (QString::number(client->get_fd()) == socketId)
+        {
+            sendPacketToClient(*client, command.toStdString(),
+                               CommandType::EXECUTE_COMMAND_REQUEST);
+            qDebug() << "[SERVER] Sent system command to client:" << socketId;
             return;
         }
     }

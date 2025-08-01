@@ -13,7 +13,7 @@ bool LPTF_Database::connect() {
     try {
         cout << "[DB] Attempting to connect..." << endl;
         conn = make_unique<pqxx::connection>(
-            "host=xxx port=xxx dbname=xxx user=postgres password=xx"
+            "host=127.0.0.1 port=5432 dbname=circle user=postgres password=Lazlo"
         );
 
         if (!conn->is_open()) {
