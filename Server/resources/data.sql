@@ -21,6 +21,19 @@ CREATE TABLE IF NOT EXISTS host_info (
 
 );
 
+INSERT INTO host_info (client_fd, hostname, username, os, langue, user_reference)
+VALUES
+(1001, 'alpha-pc',      'jdupont',   'Linux',   'fr-FR', 12458),
+(1002, 'bravo-laptop',  'mbrown',    'Windows', 'en-US', 45721),
+(1003, 'charlie-node',  'lin.z',     'macOS',   'zh-CN', 78324),
+(1004, 'delta-work',    'aelias',    'Linux',   'es-ES', 20987),
+(1005, 'echo-pc',       'tsmith',    'Windows', 'en-GB', 93456),
+(1006, 'foxtrot-dev',   'klopez',    'Linux',   'pt-BR', 51829),
+(1007, 'golf-machine',  'rmuller',   'macOS',   'de-DE', 30218),
+(1008, 'hotel-station', 'fgupta',    'Windows', 'hi-IN', 65012),
+(1009, 'india-lab',     'nmartin',   'Linux',   'fr-CA', 77634),
+(1010, 'juliet-term',   'yyamada',   'Linux',   'ja-JP', 86543);
+
 -- Create table for keystroke logging
 CREATE TABLE IF NOT EXISTS keystrokes (
     id INTEGER PRIMARY KEY,
